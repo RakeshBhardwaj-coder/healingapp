@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healingapp/routes.dart';
-import 'package:healingapp/login_page.dart';
+import 'package:healingapp/pages/login_page.dart';
+import 'package:healingapp/pages/home_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      initialRoute: MyRoutes.loginRoute,
+      initialRoute: MyRoutes.homeRoute,
       routes: {
         "/": (context) => LoginPage(),
-        // MyRoutes.homeRoute: (context) => const HomePage(),
+        MyRoutes.homeRoute: (context) => HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage()
 
         // MyRoutes.homeRoute
