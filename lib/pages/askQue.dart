@@ -13,7 +13,19 @@ class _AskQueState extends State<AskQue> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('')),
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.send,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // do something
+            },
+          )
+        ],
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -22,13 +34,13 @@ class _AskQueState extends State<AskQue> {
             children: [
               (_Textcontroller.value.text.isEmpty)
                   ? Text("Please describe your problem(In 90 words)")
-                  : Text('Sent Message:'),
+                  : Text('Send Message in public'),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextFormField(
                   controller: _Textcontroller,
                   minLines: 2,
-                  maxLines: 10,
+                  maxLines: 8,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                       hintText: 'Enter A Message Here',
