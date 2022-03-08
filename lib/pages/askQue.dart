@@ -1,71 +1,62 @@
 import 'package:flutter/material.dart';
 
-class AskQue extends StatelessWidget {
+class AskQue extends StatefulWidget {
   const AskQue({Key? key}) : super(key: key);
 
   @override
+  _AskQueState createState() => _AskQueState();
+}
+
+class _AskQueState extends State<AskQue> {
+  final TextEditingController _Textcontroller = TextEditingController();
+  String desc = "";
+  @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        appBar: AppBar(title: Text('')),
-        body: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                height: 60,
-                width: double.infinity,
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                            hintText: "Describe your problem...",
-                            hintStyle: TextStyle(color: Colors.black54),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    FloatingActionButton(
-                      onPressed: () {},
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      backgroundColor: Colors.blue,
-                      elevation: 0,
-                    ),
-                  ],
+    return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.send,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // do something
+            },
+          )
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              (_Textcontroller.value.text.isEmpty)
+                  ? Text("Please describe your problem(In 90 words)")
+                  : Text('Send Message in public'),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: _Textcontroller,
+                  minLines: 2,
+                  maxLines: 8,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                      hintText: 'Enter A Message Here',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      )),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+
+// floatingActionButton: FloatingActionButton(onPressed: (){},tooltip:'increment',child: Icon(Icons.add),),
+
     );
   }
 }
