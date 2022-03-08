@@ -3,6 +3,7 @@ import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';
+import 'package:healingapp/try.dart';
 
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         MyRoutes.homeRoute: (context) => const HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
         MyRoutes.askQueRoute:(context) => AskQue(),
+        MyRoutes.tryapp:(context) => Tryapp()
 
         // MyRoutes.homeRoute
       },
