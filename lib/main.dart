@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/routes.dart';
@@ -5,8 +6,9 @@ import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';
 import 'package:healingapp/try.dart';
 
-
-void main() {
+void main() /*async */ {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -18,13 +20,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      initialRoute: MyRoutes.askQueRoute,
+      initialRoute: MyRoutes.tryapp,
       routes: {
         "/": (context) => HomePage(),
         MyRoutes.homeRoute: (context) => const HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
-        MyRoutes.askQueRoute:(context) => AskQue(),
-        MyRoutes.tryapp:(context) => Tryapp()
+        MyRoutes.askQueRoute: (context) => AskQue(),
+        MyRoutes.tryapp: (context) => CameraWidget(),
 
         // MyRoutes.homeRoute
       },
