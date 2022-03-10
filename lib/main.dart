@@ -5,6 +5,8 @@ import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';
 import 'package:healingapp/try.dart';
+// import 'package:firebase_database/firebase_database.dart';
+
 
 void main() /*async */ {
   WidgetsFlutterBinding.ensureInitialized();

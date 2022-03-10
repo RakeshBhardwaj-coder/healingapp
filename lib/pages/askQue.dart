@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 class AskQue extends StatefulWidget {
   const AskQue({Key? key}) : super(key: key);
 
@@ -8,6 +8,9 @@ class AskQue extends StatefulWidget {
 }
 
 class _AskQueState extends State<AskQue> {
+
+final databaseReference = FirebaseDatabase.instance.reference();
+
   final TextEditingController _Textcontroller = TextEditingController();
   String desc = "";
   @override
