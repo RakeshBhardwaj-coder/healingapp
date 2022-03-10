@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 class CameraWidget extends StatefulWidget {
   @override
   State createState() {
@@ -98,6 +100,7 @@ class CameraWidgetState extends State {
     final pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
+
     setState(() {
       imageFile = pickedFile!;
     });
@@ -114,4 +117,15 @@ class CameraWidgetState extends State {
     });
     Navigator.pop(context);
   }
+
+    // Future uploadImageToFirebase(BuildContext context) async {
+    // String fileName = basename(imageFile.path);
+    // StorageRefere nce firebaseStorageRef =
+    //     FirebaseStorage.instance.ref().child('uploads/$fileName');
+    // StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    // StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    // taskSnapshot.ref.getDownloadURL().then(
+    //       (value) => print("Done: $value"),
+    //     );
+  // }
 }

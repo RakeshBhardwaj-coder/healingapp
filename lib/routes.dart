@@ -3,4 +3,5 @@ class MyRoutes {
   static String loginRoute = "/login";
   static String askQueRoute = "/askQue";
   static String tryapp = "/tryapp";
+  
 }
