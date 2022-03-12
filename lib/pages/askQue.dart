@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:healingapp/pages/yourQue.dart';
 
 class AskQue extends StatefulWidget {
   const AskQue({Key? key}) : super(key: key);
@@ -34,13 +35,21 @@ class _AskQueState extends State<AskQue> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
+            //send Button to database
             icon: Icon(
               Icons.send,
               color: Colors.white,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  yourQue()),
+              );
+
               // do something
               writeDataToDatabase('$ttl', '$sub', '$desc');
+
+              //
             },
           )
         ],
@@ -111,6 +120,10 @@ class _AskQueState extends State<AskQue> {
 
 // floatingActionButton: FloatingActionButton(onPressed: (){},tooltip:'increment',child: Icon(Icons.add),),
     );
+  }
+  //clear text 
+  void clearText() {
+    // fieldText.clear();
   }
 
   writeDataToDatabase(
