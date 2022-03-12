@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +13,10 @@ class yourQue extends StatefulWidget {
 }
 
 class _yourQueState extends State<yourQue> {
+  DatabaseReference ref = FirebaseDatabase.instance.ref("User/123");
+
+  final Future<FirebaseApp> _future = Firebase.initializeApp();
   var userId = 123;
-  final ref = FirebaseDatabase.instance.ref();
 
   final List<String> imageList = [
     "https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80",
@@ -33,7 +36,7 @@ class _yourQueState extends State<yourQue> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "How can we use superscript and subscript text in flutter Text or RichText.",
+                "KLJLKJJJJJJJJJLKGHJGHFH",
                 textAlign: TextAlign.left,
                 style: GoogleFonts.oswald(
                   fontSize: 22,
@@ -81,7 +84,16 @@ class _yourQueState extends State<yourQue> {
               //     ),
               //   ),
               // ),
-
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
+                ),
+                onPressed: () {
+                  readDataFromDatabase();
+                },
+                child: Text('TextButton'),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CarouselSlider.builder(
@@ -132,7 +144,22 @@ class _yourQueState extends State<yourQue> {
     );
   }
 
-  readDataFromDatabase() async {
-    await ref.child('users/$userId').get();
+  static readDataFromDatabase() async {
+    DatabaseReference tit = FirebaseDatabase.instance.ref('User/123/title');
+    DatabaseReference desc = FirebaseDatabase.instance.ref('User/123/problem');
+    DatabaseReference sub = FirebaseDatabase.instance.ref('User/123/subject');
+
+    tit.onValue.listen((DatabaseEvent event) {
+      final dataTitle = event.snapshot.value;
+      print(title);
+    });
+    desc.onValue.listen((event) {
+      final description = event.snapshot.value;
+      print(description);
+    });
+    sub.onValue.listen((event) {
+      final subject = event.snapshot.value;
+      print(subject);
+    });
   }
 }
