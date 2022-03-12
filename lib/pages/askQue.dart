@@ -11,8 +11,9 @@ class AskQue extends StatefulWidget {
 class _AskQueState extends State<AskQue> {
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref("User/123");
+  String? ttl, sub, desc;
 
-  List<String> _locations = [
+  List<String> _subjects = [
     'Sugar',
     'Diabtise',
     'bood pressure',
@@ -26,7 +27,7 @@ class _AskQueState extends State<AskQue> {
   String? _selectedLocation; // Option 2
 
   final TextEditingController _Textcontroller = TextEditingController();
-  String desc = "";
+  // String desc = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +40,7 @@ class _AskQueState extends State<AskQue> {
             ),
             onPressed: () {
               // do something
-              writeDataToDatabase("sugar", "sugar", "bahutbadi problem");
+              writeDataToDatabase('$ttl', '$sub', '$desc');
             },
           )
         ],
@@ -50,28 +51,29 @@ class _AskQueState extends State<AskQue> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
-               Container(
-                 child: TextField(
-  obscureText: true,
-  decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    labelText: 'Title',
-  ),
-),
-               ),
+              Container(
+                child: TextField(
+                    // obscureText: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Title',
+                    ),
+                    onChanged: (getTitle) {
+                      ttl = getTitle;
+                      // print('$ttl');
+                    }),
+              ),
               Container(
                 child: DropdownButton(
-                  
-                  hint: Text(
-                      'Subject'), // Not necessary for Option 1
+                  hint: Text('Subject'), // Not necessary for Option 1
                   value: _selectedLocation,
-                  onChanged: (newValue) {
+                  onChanged: (String? newValue) {
                     setState(() {
-                      _selectedLocation = newValue as String?;
+                      _selectedLocation = newValue;
+                      sub = newValue;
                     });
                   },
-                  items: _locations.map((location) {
+                  items: _subjects.map((location) {
                     return DropdownMenuItem(
                       child: new Text(location),
                       value: location,
@@ -91,11 +93,15 @@ class _AskQueState extends State<AskQue> {
                   maxLines: 8,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
+                      labelText: "Ask your Qustion in (90 word)",
                       hintText: 'Ask Your Question',
                       hintStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       )),
+                  onChanged: (getDesc) {
+                    desc = getDesc;
+                  },
                 ),
               ),
             ],
@@ -122,7 +128,6 @@ class _AskQueState extends State<AskQue> {
     }).catchError((error) {
       // The write failed...
       print("Error occured.");
-
     });
   }
 }
