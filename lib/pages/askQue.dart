@@ -67,6 +67,7 @@ class _AskQueState extends State<AskQue> {
                       border: OutlineInputBorder(),
                       labelText: 'Title',
                     ),
+                  style: TextStyle(fontFamily: 'Arial',fontSize: 20.0,),
                     onChanged: (getTitle) {
                       ttl = getTitle;
                       // print('$ttl');
@@ -84,7 +85,7 @@ class _AskQueState extends State<AskQue> {
                 },
                 items: _subjects.map((location) {
                   return DropdownMenuItem(
-                    child: new Text(location),
+                    child: new Text(location,style: TextStyle(fontFamily: 'Arial',fontSize: 20.0,),),
                     value: location,
                   );
                 }).toList(),
