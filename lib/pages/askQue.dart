@@ -18,12 +18,12 @@ class _AskQueState extends State<AskQue> {
     'Sugar',
     'Diabtise',
     'bood pressure',
-    'D',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i'
+    'SkinPoblem',
+    'Fever',
+    'Cold',
+    'Vaccine',
+    'Cancer',
+    'Heartattack'
   ]; // Option 2
   String? _selectedLocation; // Option 2
 
@@ -72,24 +72,23 @@ class _AskQueState extends State<AskQue> {
                       // print('$ttl');
                     }),
               ),
-              Container(
-                child: DropdownButton(
-                  hint: Text('Subject'), // Not necessary for Option 1
-                  value: _selectedLocation,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedLocation = newValue;
-                      sub = newValue;
-                    });
-                  },
-                  items: _subjects.map((location) {
-                    return DropdownMenuItem(
-                      child: new Text(location),
-                      value: location,
-                    );
-                  }).toList(),
-                ),
-              ),
+             Expanded(child: DropdownButton(
+                isExpanded: true,
+                hint: Text('Subject'), // Not necessary for Option 1
+                value: _selectedLocation,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedLocation = newValue;
+                    sub = newValue;
+                  });
+                },
+                items: _subjects.map((location) {
+                  return DropdownMenuItem(
+                    child: new Text(location),
+                    value: location,
+                  );
+                }).toList(),
+              ),),
               (_Textcontroller.value.text.length <= 90 &&
                       _Textcontroller.value.text.isEmpty)
                   ? Text("Please describe your problem(In 90 words)")
