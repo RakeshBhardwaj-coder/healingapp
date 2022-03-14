@@ -18,7 +18,6 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
     HomePage(),
     AskQue(),
     LoginPage(),
-    // yourQue()
     yourQue()
   ];
   @override
@@ -27,8 +26,9 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.lightBlue,
-        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white.withOpacity(.60),
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 255, 255, 255),
         selectedFontSize: 14,
         unselectedFontSize: 14,
         onTap: (index) {
@@ -44,21 +44,20 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
           ),
           BottomNavigationBarItem(
             // title: Text('Music'),
-            label: "Home",
+            label: "Categories",
 
-            icon: Icon(Icons.music_note),
+            icon: Icon(Icons.category),
           ),
           BottomNavigationBarItem(
             // title: Text('Places'),
-            label: "Home",
+            label: "News",
 
-            icon: Icon(Icons.location_on),
-          ),
+            icon: Icon(Icons.newspaper ),),
           BottomNavigationBarItem(
             // title: Text('News'),
-            label: "Home",
+            label: "Suggestion",
 
-            icon: Icon(Icons.library_books),
+            icon: Icon(Icons.settings_suggest),
           ),
         ],
       ),
