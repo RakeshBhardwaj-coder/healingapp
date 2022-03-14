@@ -6,9 +6,9 @@ import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';
 import 'package:healingapp/try.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/try2.dart';
 // import 'package:firebase_database/firebase_database.dart';
-
 
 void main() /*async */ {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,13 +32,13 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               themeMode: ThemeMode.light,
               debugShowCheckedModeBanner: false,
-              initialRoute: MyRoutes.homeRoute,
+              initialRoute: MyRoutes.navigatorRoute,
               routes: {
                 "/": (context) => HomePage(),
                 MyRoutes.homeRoute: (context) => const HomePage(),
                 MyRoutes.loginRoute: (context) => LoginPage(),
                 MyRoutes.askQueRoute: (context) => AskQue(),
-                MyRoutes.tryapp: (context) => Example(),
+                MyRoutes.navigatorRoute: (context) => bottomNavigatorBar(),
 
                 // MyRoutes.homeRoute
               },
@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
           return CircularProgressIndicator();
         });
 
+    //make changes by Rakesh
 
   }
 }
