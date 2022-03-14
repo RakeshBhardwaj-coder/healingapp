@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 Text(
                   "Welcome $name",

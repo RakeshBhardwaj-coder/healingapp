@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               themeMode: ThemeMode.light,
               debugShowCheckedModeBanner: false,
-              initialRoute: MyRoutes.askQueRoute,
+              initialRoute: MyRoutes.homeRoute,
               routes: {
                 "/": (context) => HomePage(),
                 MyRoutes.homeRoute: (context) => const HomePage(),
@@ -45,6 +45,6 @@ class MyApp extends StatelessWidget {
           return CircularProgressIndicator();
         });
 
-        //make changes by Rakesh
+        
   }
 }
