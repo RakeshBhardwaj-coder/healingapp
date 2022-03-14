@@ -60,7 +60,6 @@ class _yourQueState extends State<yourQue> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: bottomNavigatorBar(),
       appBar: AppBar(title: Text("Your Questions")),
       body: SingleChildScrollView(
         child: Padding(

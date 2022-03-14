@@ -14,7 +14,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: bottomNavigatorBar(),
       appBar: AppBar(
         title: const Text("Healing App"),
       ),
