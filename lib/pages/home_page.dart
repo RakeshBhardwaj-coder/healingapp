@@ -1,7 +1,6 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:healingapp/widgets/drawer.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -15,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bottomNavigatorBar(),
       appBar: AppBar(
         title: const Text("Healing App"),
       ),
