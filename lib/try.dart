@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 class CameraWidget extends StatefulWidget {
   @override
   State createState() {
@@ -15,6 +18,8 @@ class CameraWidget extends StatefulWidget {
 }
 
 class CameraWidgetState extends State {
+  File? _imageFile;
+
   PickedFile? imageFile = null;
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -88,6 +93,14 @@ class CameraWidgetState extends State {
                   _showChoiceDialog(context);
                 },
                 child: Text("Select Image"),
+              ),
+              MaterialButton(
+                textColor: Colors.white,
+                color: Colors.pink,
+                onPressed: () {
+                  uploadImageToFirebase(context);
+                },
+                child: Text("upload to database"),
               )
             ],
           ),
@@ -113,19 +126,46 @@ class CameraWidgetState extends State {
       source: ImageSource.camera,
     );
     setState(() {
-      imageFile = pickedFile!;
+      imageFile = pickedFile;
     });
     Navigator.pop(context);
   }
 
-    // Future uploadImageToFirebase(BuildContext context) async {
-    // String fileName = basename(imageFile.path);
-    // StorageRefere nce firebaseStorageRef =
-    //     FirebaseStorage.instance.ref().child('uploads/$fileName');
+// final picker = ImagePicker();
+
+//   Future pickImage() async {
+//     final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+//     setState(() {
+//       _imageFile = File(pickedFile.path);
+//     });
+//   }
+
+  Future<void> uploadImageToFirebase(BuildContext context) async {
+    // String fileName = basename(imageFile);
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref('test/');
+
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String filePath = '${appDocDir.absolute}/file-to-upload.png';
+
+    File file = File(filePath);
+
+    InkWell(
+      child: Text("Tap to Upload"),
+      onTap: () async {
+        // File image = await File("assets/img/pic.jpg").create();
+        // it creates the file,
+        // if it already existed then just return it
+        // or run this if the file is created before the onTap
+        // if(image.existsSync()) image = await image.create();
+      },
+    );
+
     // StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
     // StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     // taskSnapshot.ref.getDownloadURL().then(
     //       (value) => print("Done: $value"),
     //     );
-  // }
+  }
 }
