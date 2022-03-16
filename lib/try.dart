@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:path/path.dart';
 
 class CameraWidget extends StatefulWidget {
   @override
@@ -19,6 +21,7 @@ class CameraWidget extends StatefulWidget {
 
 class CameraWidgetState extends State {
   File? _imageFile;
+  File? afile;
 
   PickedFile? imageFile = null;
   Future<void> _showChoiceDialog(BuildContext context) {
@@ -71,38 +74,52 @@ class CameraWidgetState extends State {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Pick Image Camera"),
-        backgroundColor: Colors.green,
-      ),
-      body: Center(
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Card(
-                child: (imageFile == null)
-                    ? Text("data")
-                    : Image.file(File(imageFile!.path)),
-              ),
-              MaterialButton(
-                textColor: Colors.white,
-                color: Colors.pink,
-                onPressed: () {
-                  _showChoiceDialog(context);
-                },
-                child: Text("Select Image"),
-              ),
-              MaterialButton(
-                textColor: Colors.white,
-                color: Colors.pink,
-                onPressed: () {
-                  uploadImageToFirebase(context);
-                },
-                child: Text("upload to database"),
-              )
-            ],
+    return Material(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Pick Image Camera"),
+          backgroundColor: Colors.green,
+        ),
+        body: Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Card(
+                  child: (imageFile == null)
+                      ? Text("data")
+                      : Image.file(File(imageFile!.path)),
+                ),
+                MaterialButton(
+                  textColor: Colors.white,
+                  color: Colors.pink,
+                  onPressed: () async {
+                    // _showChoiceDialog(context);
+                    uploadImageToFirebase();
+                    //     FilePickerResult result = await FilePicker.platform.pickFiles(
+                    //   // allowMultiple: true,
+                    //   // type: FileType.custom,
+                    //   // allowedExtensions: ['jpg', 'png', 'jpeg'],
+                    // );
+                  },
+                  child: Text("uPload"),
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      final reslt = await FilePicker.platform.pickFiles();
+                      if (reslt == null) return;
+
+                      final file = reslt.files.first;
+                      final afilePath = file.path!;
+                      setState(() {
+                        afile = File(afilePath);
+                      });
+
+                      print('$afilePath');
+                    },
+                    child: Text("aaa"))
+              ],
+            ),
           ),
         ),
       ),
@@ -141,31 +158,18 @@ class CameraWidgetState extends State {
 //     });
 //   }
 
-  Future<void> uploadImageToFirebase(BuildContext context) async {
-    // String fileName = basename(imageFile);
-    firebase_storage.Reference ref =
-        firebase_storage.FirebaseStorage.instance.ref('test/');
-
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String filePath = '${appDocDir.absolute}/file-to-upload.png';
-
-    File file = File(filePath);
-
-    InkWell(
-      child: Text("Tap to Upload"),
-      onTap: () async {
-        // File image = await File("assets/img/pic.jpg").create();
-        // it creates the file,
-        // if it already existed then just return it
-        // or run this if the file is created before the onTap
-        // if(image.existsSync()) image = await image.create();
-      },
-    );
-
-    // StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
-    // StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-    // taskSnapshot.ref.getDownloadURL().then(
-    //       (value) => print("Done: $value"),
-    //     );
+  Future uploadImageToFirebase() async {
+    if (afile == null) return;
+    try {
+      final filaName = basename(afile!.path);
+      final destination = ('test/$filaName');
+      final ref = firebase_storage.FirebaseStorage.instance.ref(destination);
+       StorageUploadTask uploadTask = ref.putFile(File(filaName));   
+      ref.putFile(File(filaName));
+    
+    } on firebase_storage.FirebaseException catch (e) {
+      return null;
+    }
+    // ref.putFile(filaName!);
   }
 }

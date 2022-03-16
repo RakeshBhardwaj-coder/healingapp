@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               initialRoute: MyRoutes.tryApp,
               routes: {
                 "/": (context) => HomePage(),
-                MyRoutes.homeRoute: (context) => const HomePage(),
+                MyRoutes.homeRoute: (context) => HomePage(),
                 MyRoutes.loginRoute: (context) => LoginPage(),
                 MyRoutes.askQueRoute: (context) => AskQue(),
                 MyRoutes.navigatorRoute: (context) => bottomNavigatorBar(),
