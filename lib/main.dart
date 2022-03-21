@@ -10,9 +10,9 @@ import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/try2.dart';
 // import 'package:firebase_database/firebase_database.dart';
 
-void main() /*async */ {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
               initialRoute: MyRoutes.navigatorRoute,
               routes: {
                 "/": (context) => HomePage(),
-                MyRoutes.homeRoute: (context) => const HomePage(),
+                MyRoutes.homeRoute: (context) => HomePage(),
                 MyRoutes.loginRoute: (context) => LoginPage(),
                 MyRoutes.askQueRoute: (context) => AskQue(),
                 MyRoutes.navigatorRoute: (context) => bottomNavigatorBar(),
-
+                MyRoutes.tryApp: (context) => CameraWidget(),
                 // MyRoutes.homeRoute
               },
             );
@@ -48,6 +48,5 @@ class MyApp extends StatelessWidget {
         });
 
     //make changes by Rakesh
-
   }
 }
