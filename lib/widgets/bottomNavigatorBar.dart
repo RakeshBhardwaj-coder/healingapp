@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
+import 'package:healingapp/pages/helpUs.dart';
 import 'package:healingapp/pages/home_page.dart';
 import 'package:healingapp/pages/login_page.dart';
+import 'package:healingapp/pages/news_Page.dart';
 import 'package:healingapp/pages/yourQue.dart';
 // import 'package:healingapp/pages/yourQue.dart';
 
@@ -17,8 +19,8 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   static List<Widget> _widgetOptions = <Widget>[
     AskQue(),
     HomePage(),
-    LoginPage(),
-    yourQue()
+    NewsPage(),
+   HelpUs()
   ];
   @override
   Widget build(BuildContext context) {

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               themeMode: ThemeMode.light,
               debugShowCheckedModeBanner: false,
-              initialRoute: MyRoutes.tryApp,
+              initialRoute: MyRoutes.navigatorRoute,
               routes: {
                 "/": (context) => HomePage(),
                 MyRoutes.homeRoute: (context) => HomePage(),

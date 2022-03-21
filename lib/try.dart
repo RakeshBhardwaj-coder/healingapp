@@ -164,7 +164,7 @@ class CameraWidgetState extends State {
       final filaName = basename(afile!.path);
       final destination = ('test/$filaName');
       final ref = firebase_storage.FirebaseStorage.instance.ref(destination);
-       StorageUploadTask uploadTask = ref.putFile(File(filaName));   
+      //  StorageUploadTask uploadTask = ref.putFile(File(filaName));   
       ref.putFile(File(filaName));
     
     } on firebase_storage.FirebaseException catch (e) {
