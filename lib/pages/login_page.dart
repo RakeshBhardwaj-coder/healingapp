@@ -1,131 +1,203 @@
 import 'package:flutter/material.dart';
-import 'package:healingapp/routes.dart';
-// import 'package:flutter_catalog/utils/routes.dart';
+import 'package:lottie/lottie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// ignore: use_key_in_widget_constructors
+void main() => runApp(const LoginPage());
+
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String name = "";
-  bool changeButton = false;
-
-  final _formKey = GlobalKey<FormState>();
-
-  moveToHome(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        changeButton = true;
-      });
-      await Future.delayed(const Duration(seconds: 1));
-      await Navigator.pushNamed(context, MyRoutes.homeRoute);
-      setState(() {
-        changeButton = false;
-      });
-    }
-  }
+  void click() {}
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.white,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/images/homePage.png",
-                  fit: BoxFit.cover,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                Colors.purpleAccent,
+                Colors.amber,
+                Colors.blue,
+              ])),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                height: 50,
+              ),
+              // SizedBox(
+              //   height: 200,
+              //   width: 300,
+              //   child: LottieBuilder.asset("assets/lottie/login2.json"),
+              // ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: 325,
+                height: 470,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Text(
-                  "Welcome $name",
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 32.0),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: "Enter username",
-                          labelText: "Username",
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Username cannot be empty";
-                          }
-
-                          return null;
-                        },
-                        onChanged: (value) {
-                          name = value;
-                          setState(() {});
-                        },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      "Healing App",
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Please Login",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
                       ),
-                      TextFormField(
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: 260,
+                      height: 60,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                            suffix: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Colors.red,
+                            ),
+                            labelText: "Email Address",
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            )),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      width: 260,
+                      height: 60,
+                      child: const TextField(
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          hintText: "Enter password",
-                          labelText: "Password",
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Password cannot be empty";
-                          } else if (value.length < 6) {
-                            return "Password length should be atleast 6";
-                          }
-
-                          return null;
-                        },
+                        decoration: InputDecoration(
+                            suffix: Icon(
+                              FontAwesomeIcons.eyeSlash,
+                              color: Colors.red,
+                            ),
+                            labelText: "Password",
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            )),
                       ),
-                      const SizedBox(
-                        height: 40.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 30, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: click,
+                            child: const Text(
+                              "Forget Password",
+                              style: TextStyle(color: Colors.deepOrange),
+                            ),
+                          )
+                        ],
                       ),
-                      Material(
-                        color: Colors.deepPurple,
-                        borderRadius:
-                            BorderRadius.circular(changeButton ? 50 : 8),
-                        child: InkWell(
-                          onTap: () => moveToHome(context),
-                          child: AnimatedContainer(
-                            duration: const Duration(seconds: 1),
-                            width: changeButton ? 50 : 150,
-                            height: 50,
-                            alignment: Alignment.center,
-                            child: changeButton
-                                ? const Icon(
-                                    Icons.done,
-                                    color: Colors.white,
-                                  )
-                                : const Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 250,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color(0xFF8A2387),
+                                  Color(0xFFE94057),
+                                  Color(0xFFF27121),
+                                ])),
+                        child: const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                    const SizedBox(
+                      height: 17,
+                    ),
+                    const Text(
+                      "Or Login using Social Media Account",
+                      
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.red),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            onPressed: click,
+                            icon: const Icon(FontAwesomeIcons.facebook,
+                                color: Colors.blue)),
+                        IconButton(
+                            onPressed: click,
+                            icon: const Icon(
+                              FontAwesomeIcons.google,
+                              color: Colors.redAccent,
+                            )),
+                        IconButton(
+                            onPressed: click,
+                            icon: const Icon(
+                              FontAwesomeIcons.twitter,
+                              color: Colors.orangeAccent,
+                            )),
+                        IconButton(
+                            onPressed: click,
+                            icon: const Icon(
+                              FontAwesomeIcons.linkedinIn,
+                              color: Colors.green,
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
