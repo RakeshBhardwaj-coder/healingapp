@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
+import 'package:healingapp/pages/loginPage.dart';
 import 'package:healingapp/pages/signup.dart';
 import 'package:healingapp/pages/signup2.dart';
 import 'package:healingapp/routes.dart';
@@ -42,11 +43,11 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 themeMode: ThemeMode.light,
                 debugShowCheckedModeBanner: false,
-                initialRoute: MyRoutes.navigatorRoute,
+                initialRoute: MyRoutes.loginRoute,
                 routes: {
                   "/": (context) => SignUpWidget(),
                   MyRoutes.homeRoute: (context) => SignUpWidget(),
-                  MyRoutes.loginRoute: (context) => SignUpPage(),
+                  MyRoutes.loginRoute: (context) => LoginPage2(),
                   MyRoutes.askQueRoute: (context) => AskQue(),
                   MyRoutes.navigatorRoute: (context) => bottomNavigatorBar(),
                   MyRoutes.tryApp: (context) => CameraWidget(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/pages/helpUs.dart';
 import 'package:healingapp/pages/home_page.dart';
+import 'package:healingapp/pages/loginPage.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/news_Page.dart';
 import 'package:healingapp/pages/signup.dart';
@@ -19,7 +20,7 @@ class bottomNavigatorBar extends StatefulWidget {
 class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    LoginPage(),
+    HomePage(),
     SignUpPage(),
     AskQue(),
     HelpUs()

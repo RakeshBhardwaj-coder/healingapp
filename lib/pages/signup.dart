@@ -1,13 +1,15 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healingapp/pages/login_page.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
+
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmPasswordController = TextEditingController();
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
-
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -40,21 +42,6 @@ class SignUpPage extends StatelessWidget {
       print("Password length should be more than 6 letter.");
     } else {
       print("Password and confirm not matching.");
-    }
-  }
-
-  signIn() async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: "barry.allen@example.com",
-              password: "SuperSecretPassword!");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
     }
   }
 
@@ -110,7 +97,7 @@ class SignUpPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-                  child: TextFormField(
+                  child: TextField(
                       obscureText: true,
                       controller: confirmPasswordController,
                       decoration: InputDecoration(
@@ -144,5 +131,20 @@ class SignUpPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+signIn() async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: existEmail!, password: existPassword!);
+    print("Hoge lwda sign in");
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided for that user.');
+    }
   }
 }

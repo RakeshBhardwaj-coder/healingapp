@@ -1,12 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:healingapp/pages/signup.dart';
 
-void main() => runApp(const LoginPage());
+import '../widgets/bottomNavigatorBar.dart';
+
+void main() => runApp(LoginPage());
+
+String? existEmail, existPassword;
+final _formKey = GlobalKey<FormState>();
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
+  LoginPage({Key? key}) : super(key: key);
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -78,7 +84,14 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      key: _formKey,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.envelope,
@@ -97,7 +110,13 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
                         obscureText: true,
                         decoration: InputDecoration(
                             suffix: Icon(
@@ -143,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(12.0),
                           child: Text(
-                            'Login',
+                            'Logi',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -151,13 +170,26 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      onTap: () {
+                        // if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          existEmail = emailController.text;
+                          existPassword = passwordController.text;
+                        });
+                        signIn();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => bottomNavigatorBar(),
+                            ));
+                        // }
+                      },
                     ),
                     const SizedBox(
                       height: 17,
                     ),
                     const Text(
                       "Or Login using Social Media Account",
-                      
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.red),
                     ),
