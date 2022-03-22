@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:healingapp/pages/login_page.dart';
@@ -15,7 +16,10 @@ class LoginPage2 extends StatefulWidget {
 
 class _LoginPage2State extends State<LoginPage2> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  String existingEmail = '', existingPassword = '';
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -45,6 +49,7 @@ class _LoginPage2State extends State<LoginPage2> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
+                    controller: emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
@@ -61,6 +66,7 @@ class _LoginPage2State extends State<LoginPage2> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
+                    controller: passwordController,
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
                       MinLengthValidator(6,
@@ -96,16 +102,10 @@ class _LoginPage2State extends State<LoginPage2> {
                         if (formkey.currentState!.validate()) {
                           // print("GnnnndTu");
                           setState(() {
-                            existEmail = emailController.text;
-                            existPassword = passwordController.text;
+                            existingEmail = emailController.text;
+                            existingPassword = passwordController.text;
                           });
-                          signIn();
-
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => bottomNavigatorBar(),
-                              ));
+                          userLogin();
                         }
                       },
                     )),
@@ -128,5 +128,36 @@ class _LoginPage2State extends State<LoginPage2> {
             )),
       ),
     );
+  }
+
+  userLogin() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: existingEmail, password: existingPassword);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => bottomNavigatorBar(),
+          ));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "No user found for that email.",
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            )));
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "Wrong Password provided by User",
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            )));
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 }

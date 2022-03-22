@@ -1,17 +1,17 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
-final TextEditingController emailController = TextEditingController();
-final TextEditingController passwordController = TextEditingController();
-final TextEditingController confirmPasswordController = TextEditingController();
-
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -131,20 +131,5 @@ class SignUpPage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-signIn() async {
-  try {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: existEmail!, password: existPassword!);
-    print("Hoge lwda sign in");
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-    } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
-    }
   }
 }

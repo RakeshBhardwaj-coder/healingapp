@@ -172,16 +172,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onTap: () {
                         // if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          existEmail = emailController.text;
-                          existPassword = passwordController.text;
-                        });
-                        signIn();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => bottomNavigatorBar(),
-                            ));
+                        // setState(() {
+                        //   existEmail = emailController.text;
+                        //   existPassword = passwordController.text;
+                        // });
+                        // signIn();
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => bottomNavigatorBar(),
+                        //     ));
                         // }
                       },
                     ),

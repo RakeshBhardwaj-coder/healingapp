@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 initialRoute: MyRoutes.loginRoute,
                 routes: {
-                  "/": (context) => SignUpWidget(),
+                  "/": (context) => HomePage(),
                   MyRoutes.homeRoute: (context) => SignUpWidget(),
                   MyRoutes.loginRoute: (context) => LoginPage2(),
                   MyRoutes.askQueRoute: (context) => AskQue(),
