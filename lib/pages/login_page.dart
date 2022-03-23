@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:healingapp/pages/signup.dart';
+import 'package:healingapp/userServices/signupPage.dart';
 
 import '../widgets/bottomNavigatorBar.dart';
 
 void main() => runApp(LoginPage());
+
+
 
 String? existEmail, existPassword;
 final _formKey = GlobalKey<FormState>();
@@ -162,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(12.0),
                           child: Text(
-                            'Logi',
+                            'Login',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,

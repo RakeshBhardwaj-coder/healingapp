@@ -1,10 +1,9 @@
-import 'dart:ffi';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
-import 'package:healingapp/pages/loginPage.dart';
-import 'package:healingapp/pages/signup.dart';
-import 'package:healingapp/pages/signup2.dart';
+import 'package:healingapp/userServices/loginPage.dart';
+import 'package:healingapp/userServices/signupPage.dart';
+import 'package:healingapp/pages/demo_desing_signup2.dart';
 import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';

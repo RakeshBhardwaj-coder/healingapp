@@ -69,7 +69,10 @@ class _AskQueState extends State<AskQue> {
                   child: TextField(
                       // obscureText: true,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        // focusColor: Colors.red,
+                        border: OutlineInputBorder(
+                          
+                        ),
                         labelText: 'Title',
                       ),
                       style: TextStyle(
