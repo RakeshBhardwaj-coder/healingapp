@@ -1,14 +1,16 @@
+import 'dart:ffi';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
-import 'package:healingapp/userServices/loginPage.dart';
-import 'package:healingapp/userServices/signupPage.dart';
-import 'package:healingapp/pages/demo_desing_signup2.dart';
+// import 'package:healingapp/pages/loginPage.dart';
+// import 'package:healingapp/pages/signup.dart';
+// import 'package:healingapp/pages/signup2.dart';
 import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/pages/home_page.dart';
 import 'package:healingapp/services/auth_service.dart';
 import 'package:healingapp/try.dart';
+import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/try2.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
                 initialRoute: MyRoutes.loginRoute,
                 routes: {
                   "/": (context) => HomePage(),
-                  MyRoutes.homeRoute: (context) => SignUpWidget(),
+                  MyRoutes.homeRoute: (context) => HomePage(),
                   MyRoutes.loginRoute: (context) => LoginPage2(),
                   MyRoutes.askQueRoute: (context) => AskQue(),
                   MyRoutes.navigatorRoute: (context) => bottomNavigatorBar(),

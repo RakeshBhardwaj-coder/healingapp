@@ -157,7 +157,7 @@ class _LoginPage2State extends State<LoginPage2> {
                         //     existingEmail = emailController.text;
                         //     existingPassword = passwordController.text;
                         //   });
-                        userLogin();
+                        // userLogin();
                         // }
                       },
                     )),
@@ -180,6 +180,27 @@ class _LoginPage2State extends State<LoginPage2> {
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
+                Divider(),
+                MaterialButton(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://pbs.twimg.com/profile_images/1455185376876826625/s1AjSxph_400x400.jpg'),
+                                    fit: BoxFit.cover),
+                                shape: BoxShape.circle),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text("Sign In with Google")
+                        ]),
+                    onPressed: () {})
               ],
             )),
       ),
