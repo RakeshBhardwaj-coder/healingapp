@@ -5,18 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:healingapp/services/authHelper.dart';
 import 'package:healingapp/userServices/forgetPassword.dart';
-import 'package:healingapp/pages/login_page.dart';
-import 'package:healingapp/userServices/signupPage.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
-class LoginPage2 extends StatefulWidget {
-  LoginPage2({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPage2State createState() => _LoginPage2State();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPage2State extends State<LoginPage2> {
+class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   String existingEmail = '', existingPassword = '';
 
@@ -45,7 +43,7 @@ class _LoginPage2State extends State<LoginPage2> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'Sign in',
+                      'Login',
                       style: TextStyle(fontSize: 20),
                     )),
                 Container(
@@ -148,59 +146,8 @@ class _LoginPage2State extends State<LoginPage2> {
                             print('Wrong password provided for that user.');
                           }
                         }
-
-                        // _formKey.currentState?.reset();
-
-                        print(emailController);
-                        // if (formkey.currentState!.validate()) {
-                        //   setState(() {
-                        //     existingEmail = emailController.text;
-                        //     existingPassword = passwordController.text;
-                        //   });
-                        // userLogin();
-                        // }
                       },
                     )),
-                Row(
-                  children: <Widget>[
-                    const Text('Does not have account?'),
-                    TextButton(
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        //signup screen
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpPage()));
-                      },
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ),
-                Divider(),
-                MaterialButton(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://pbs.twimg.com/profile_images/1455185376876826625/s1AjSxph_400x400.jpg'),
-                                    fit: BoxFit.cover),
-                                shape: BoxShape.circle),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text("Sign In with Google")
-                        ]),
-                    onPressed: () {})
               ],
             )),
       ),

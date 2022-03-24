@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/home_page.dart';
-import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/services/auth_service.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:provider/provider.dart';
