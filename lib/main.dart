@@ -8,11 +8,11 @@ import 'package:healingapp/pages/askQue.dart';
 // import 'package:healingapp/pages/signup2.dart';
 import 'package:healingapp/routes.dart';
 import 'package:healingapp/pages/home_page.dart';
-import 'package:healingapp/services/auth_service.dart';
 import 'package:healingapp/try.dart';
 import 'package:healingapp/userServices/SignUpPage.dart';
 import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/userServices/verifyEmailPage.dart';
+import 'package:healingapp/utils/userPreferences.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/try2.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await UserPreferences.init();
   await Firebase.initializeApp();
   runApp(MaterialApp(
     home: MyApp(),

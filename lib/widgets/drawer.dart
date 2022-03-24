@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:healingapp/pages/userprofiles/editProfilePage.dart';
+import 'package:healingapp/pages/userprofiles/userProfile.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -12,7 +14,6 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   final currentUser = FirebaseAuth.instance.currentUser;
   // String userName = currentUser!.uid.toString();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +71,13 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               onTap: () {
                 // Update the state of the app.
-                // ...
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(),
+                    ));
+
+                // Navigator.pop(context);
               },
             ),
             ListTile(
