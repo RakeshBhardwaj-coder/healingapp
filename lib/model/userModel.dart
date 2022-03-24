@@ -1,25 +1,16 @@
-class User {
-  final String id;
-  final String fullName;
-  final String email;
-  final String userRole;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  User(
-      {required this.id,
-      required this.fullName,
-      required this.email,
-      required this.userRole});
-  User.fromData(Map<String, dynamic> data)
-      : id = data['id'],
-        fullName = data['fullName'],
-        email = data['email'],
-        userRole = data['userRole'];
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'fullName': fullName,
-      'email': email,
-      'userRole': userRole,
-    };
+class UserDetails {
+  final String uid;
+  UserDetails({
+    required this.uid,
+  });
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+  Future updateUserData(String name, String email, String title) async {
+    return await users
+        .doc(uid)
+        .set({'name': name, 'email': email, 'title': title});
   }
 }

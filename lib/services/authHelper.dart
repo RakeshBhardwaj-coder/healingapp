@@ -7,7 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:device_info/device_info_pl.dart';
 // import 'package:package_info/package_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:healingapp/model/userModel.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:healingapp/userServices/signupPage.dart';
 
 class AuthHelper {
   static FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,6 +17,13 @@ class AuthHelper {
   static signInWithEmail({String? email, String? password}) async {
     final res = await _auth.signInWithEmailAndPassword(
         email: email!, password: password!);
+
+    // User? user = FirebaseAuth.instance.currentUser;
+    // await UserDetails(uid: user!.uid)
+    //     .updateUserData('ram', userEmail!, userTitle!);
+
+
+    // await AddUser(user.uid);
     // final User user = res.user;
     // return user;
   }
@@ -22,8 +31,6 @@ class AuthHelper {
   static signupWithEmail({String? email, String? password}) async {
     final res = await _auth.createUserWithEmailAndPassword(
         email: email!, password: password!);
-    // final User user = res.user;
-    // return user;
   }
 
   static signInWithGoogle() async {

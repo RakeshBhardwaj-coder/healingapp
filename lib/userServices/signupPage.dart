@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healingapp/model/userModel.dart';
 import 'package:healingapp/pages/login_page.dart';
 import 'package:healingapp/services/authHelper.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
@@ -11,6 +12,8 @@ class SignUpPage extends StatefulWidget {
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
+
+String? userName, userEmail, userTitle;
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
@@ -27,15 +30,15 @@ class _SignUpPageState extends State<SignUpPage> {
   String? selectedValue;
   List<String> items = ['User', 'Doctor'];
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    // This also removes the _printLatestValue listener.
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    // super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Clean up the controller when the widget is removed from the widget tree.
+  //   // This also removes the _printLatestValue listener.
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   confirmPasswordController.dispose();
+  //   // super.dispose();
+  // }
 
   clear() {
     nameController.clear();
@@ -80,21 +83,22 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Full Name',
-                      ),
-                      style: TextStyle(
-                        fontFamily: 'Arial',
-                        fontSize: 20.0,
-                      ),
-                      onChanged: (getEmail) {
-                        // print('$ttl');
-                        getEmail = emailController.text;
-                        print(getEmail);
-                      }),
+                  // TextField(
+                  //     controller: nameController,
+                  //     decoration: InputDecoration(
+                  //       border: OutlineInputBorder(),
+                  //       labelText: 'Full Name',
+                  //     ),
+                  //     style: TextStyle(
+                  //       fontFamily: 'Arial',
+                  //       fontSize: 20.0,
+                  //     ),
+                  //     onChanged: (getName) {
+                  //       // print('$ttl');
+                  //       getName = nameController.text;
+                  //       userName = nameController.text;
+                  //       // print(getEmail);
+                  //     }),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: TextField(
@@ -113,6 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         onChanged: (getEmail) {
                           // print('$ttl');
                           getEmail = emailController.text;
+                          userEmail = emailController.text;
                           print(getEmail);
                         }),
                   ),
@@ -151,29 +156,31 @@ class _SignUpPageState extends State<SignUpPage> {
                         }),
                   ),
                   // DropdownButtonHideUnderline(
-                  DropdownButtonFormField(
-                    decoration: InputDecoration(
-                        focusColor: Colors.red,
-                        border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(10.0),
-                          ),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[800]),
-                        hintText: "Title",
-                        fillColor: Color.fromARGB(255, 255, 255, 255)),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        value = selectedValue;
-                      });
-                    },
-                    items: items
-                        .map((title) => DropdownMenuItem(
-                            value: title, child: Text("$title")))
-                        .toList(),
-                  ),
+                  // DropdownButtonFormField(
+                  //   decoration: InputDecoration(
+                  //       focusColor: Colors.red,
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: const BorderRadius.all(
+                  //           const Radius.circular(10.0),
+                  //         ),
+                  //       ),
+                  //       filled: true,
+                  //       hintStyle: TextStyle(color: Colors.grey[800]),
+                  //       hintText: "Title",
+                  //       fillColor: Color.fromARGB(255, 255, 255, 255)),
+                  //   // value: selectedValue,
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       selectedValue = value.toString();
+                  //       userTitle = selectedValue;
+                  //       print(selectedValue);
+                  //     });
+                  //   },
+                  //   items: items
+                  //       .map((title) => DropdownMenuItem(
+                  //           value: title, child: Text("$title")))
+                  //       .toList(),
+                  // ),
                   // ),
                   MaterialButton(
                     color: Colors.lightBlue,
@@ -185,23 +192,53 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () async {
                       if (emailController.text.isEmpty ||
                           passwordController.text.isEmpty) {
+                        const snackBar = SnackBar(
+                          content: Text("Email and Password cannot be Empty",
+                              textAlign: TextAlign.center),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                         print("Email and Password cannot be Empty");
                         return;
                       }
                       if (confirmPasswordController.text.isEmpty ||
                           confirmPasswordController.text !=
                               passwordController.text) {
+                        const snackBar = SnackBar(
+                          content: Text("Confirm password does not match",
+                              textAlign: TextAlign.center),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         print("Confirm password does not match");
                         return;
                       }
                       try {
-                        final user = await AuthHelper.signupWithEmail(
-                            email: emailController.text,
-                            password: passwordController.text);
-                        if (user != null) {
+                        User? user = FirebaseAuth.instance.currentUser;
+
+                        final userAdded = await AuthHelper.signupWithEmail(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim());
+
+                        if (userAdded != null) {
+                          const snackBar = SnackBar(
+                            content: Text(
+                              "SignUp Successfully",
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           print("SignUp Successfully");
                         }
                       } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              e.toString(),
+                              textAlign: TextAlign.center,
+                            )));
                         print(e);
                       }
 

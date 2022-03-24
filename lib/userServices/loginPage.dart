@@ -35,7 +35,7 @@ class _LoginPage2State extends State<LoginPage2> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'TutorialKart',
+                      'HealingApp',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -125,6 +125,7 @@ class _LoginPage2State extends State<LoginPage2> {
                               MaterialPageRoute(
                                 builder: (context) => bottomNavigatorBar(),
                               ));
+
                           // }
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
@@ -152,7 +153,6 @@ class _LoginPage2State extends State<LoginPage2> {
 
                         print(emailController);
                         // if (formkey.currentState!.validate()) {
-                        //   // print("GnnnndTu");
                         //   setState(() {
                         //     existingEmail = emailController.text;
                         //     existingPassword = passwordController.text;
