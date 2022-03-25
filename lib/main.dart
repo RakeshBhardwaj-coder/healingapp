@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await UserPreferences.init();
+  await UserPreferences.init();
   await Firebase.initializeApp();
   runApp(MaterialApp(
     home: MyApp(),

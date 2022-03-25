@@ -92,8 +92,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 text: "Save",
                 onClicked: () {
                   UserPreferences.setUser(user);
-                  print(user.name);
-                  // Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 })
           ],
         ),

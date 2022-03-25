@@ -38,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(builder: (context) => EditProfilePage()),
                 );
                 setState(() {});
-                print("get " + user.name);
               }),
           const SizedBox(
             height: 24,
