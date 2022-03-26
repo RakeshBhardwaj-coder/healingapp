@@ -27,21 +27,32 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animated_theme_switcher: ^2.0.6
   carousel_slider: ^4.0.0
   cloud_firestore: ^1.0.7
   cupertino_icons: ^1.0.2
+  device_info_plus: ^3.2.2
+  dropdown_button2: ^1.2.2
   dropdown_search: ^2.0.1
   file_picker: ^4.5.1
   firebase_analytics: ^9.1.2
+  firebase_auth: ^3.3.11
   firebase_core: ^1.13.1
   firebase_database: ^9.0.8
   firebase_storage: ^10.2.9
   flutter:
     sdk: flutter
+  font_awesome_flutter: ^10.0.0
+  form_field_validator: ^1.1.0
   google_fonts: ^2.3.1
+  google_sign_in: ^5.2.4
   image_cropper: ^1.5.0
   image_picker: ^0.8.4+10
+  lottie: ^1.2.2
+  package_info_plus: ^1.4.0
   path_provider: ^2.0.9
+  provider: ^6.0.2
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_lints: ^1.0.0

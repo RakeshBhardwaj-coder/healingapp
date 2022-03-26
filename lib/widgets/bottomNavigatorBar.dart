@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:healingapp/pages/askQue.dart';
+import 'package:healingapp/pages/categories.dart';
 import 'package:healingapp/pages/helpUs.dart';
-import 'package:healingapp/pages/home_page.dart';
-import 'package:healingapp/pages/login_page.dart';
+import 'package:healingapp/pages/HomePage.dart';
+import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/pages/news_Page.dart';
 import 'package:healingapp/pages/yourQue.dart';
+import 'package:healingapp/try.dart';
 // import 'package:healingapp/pages/yourQue.dart';
 
 class bottomNavigatorBar extends StatefulWidget {
@@ -17,10 +19,10 @@ class bottomNavigatorBar extends StatefulWidget {
 class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    AskQue(),
     HomePage(),
-    NewsPage(),
-   HelpUs()
+    CategoriesPage(),
+    AskQue(),
+    HelpUs()
   ];
   @override
   Widget build(BuildContext context) {

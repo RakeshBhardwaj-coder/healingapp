@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:healingapp/pages/yourQue.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AskQue extends StatefulWidget {
@@ -38,9 +39,16 @@ class _AskQueState extends State<AskQue> {
     return Material(
       child: Scaffold(
         appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => bottomNavigatorBar()),
+            ),
+          ),
           actions: <Widget>[
             IconButton(
               //send Button to database
+              
               icon: Icon(
                 Icons.send,
                 color: Colors.white,
@@ -69,6 +77,7 @@ class _AskQueState extends State<AskQue> {
                   child: TextField(
                       // obscureText: true,
                       decoration: InputDecoration(
+                        // focusColor: Colors.red,
                         border: OutlineInputBorder(),
                         labelText: 'Title',
                       ),
@@ -90,7 +99,7 @@ class _AskQueState extends State<AskQue> {
                         // isDense: true,
 
                         hintText: "Select Option",
-                        labelText: "Subject",
+                        labelText: "Your Problem realted to",
                         contentPadding: EdgeInsets.fromLTRB(10, 10, 0, 0),
 
                         border: OutlineInputBorder(),
@@ -147,7 +156,27 @@ class _AskQueState extends State<AskQue> {
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                         isDense: false,
-                        labelText: "Ask your Qustion in (90 words)",
+                        labelText: "Say your Problem in (90 words)",
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        )),
+                    onChanged: (getDesc) {
+                      desc = getDesc;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: TextFormField(
+                    textAlign: TextAlign.left,
+                    // controller: _Textcontroller,
+                    minLines: 2,
+                    maxLines: 8,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                        isDense: false,
+                        labelText: "How we can help you...",
                         hintStyle: TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
