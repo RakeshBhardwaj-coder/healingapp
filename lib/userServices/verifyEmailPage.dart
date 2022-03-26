@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:healingapp/pages/home_page.dart';
+import 'package:healingapp/pages/HomePage.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
 class VerifyEmailPage extends StatefulWidget {

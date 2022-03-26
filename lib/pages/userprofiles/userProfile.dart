@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:healingapp/model/userModel.dart';
 import 'package:healingapp/pages/userprofiles/editProfilePage.dart';
 import 'package:healingapp/utils/userPreferences.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/widgets/buttonWidget.dart';
 import 'package:healingapp/widgets/profileWidget.dart';
 
@@ -23,6 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         leading: BackButton(
           color: Colors.black,
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => bottomNavigatorBar()),
+          ),
         ),
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
         shadowColor: Colors.black,

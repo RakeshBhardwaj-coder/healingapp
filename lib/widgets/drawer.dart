@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:healingapp/pages/userprofiles/editProfilePage.dart';
 import 'package:healingapp/pages/userprofiles/userProfile.dart';
+import 'package:healingapp/utils/userPreferences.dart';
+import 'package:healingapp/widgets/profileWidget.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -17,6 +20,8 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final user = UserPreferences.myUser;
+
     const userImageUrl =
         "https://raw.githubusercontent.com/RakeshBhardwaj-coder/RakeshBhardwaj.github.io/master/rks_logo.jpeg";
     return Drawer(
@@ -26,11 +31,12 @@ class _MyDrawerState extends State<MyDrawer> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
+            ProfileWidget(imagePath: user.imagePath, onClicked: () {}),
             const DrawerHeader(
               padding: EdgeInsets.zero,
               child: UserAccountsDrawerHeader(
                   margin: EdgeInsets.zero,
-                  accountName: Text("lund"),
+                  accountName: Text("lnd"),
                   accountEmail: Text("Erak"),
                   currentAccountPicture: CircleAvatar(
                     backgroundColor: Colors.white,
@@ -94,9 +100,38 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: () async {
                 // Update the state of the app.
                 // ...
-                await FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
               },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent[700],
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0)),
+                  ),
+                  child: MaterialButton(
+                    child: Text(
+                      "SignOut",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),

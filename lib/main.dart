@@ -7,7 +7,7 @@ import 'package:healingapp/pages/askQue.dart';
 // import 'package:healingapp/pages/signup.dart';
 // import 'package:healingapp/pages/signup2.dart';
 import 'package:healingapp/routes.dart';
-import 'package:healingapp/pages/home_page.dart';
+import 'package:healingapp/pages/HomePage.dart';
 import 'package:healingapp/try.dart';
 import 'package:healingapp/userServices/SignUpPage.dart';
 import 'package:healingapp/userServices/loginPage.dart';

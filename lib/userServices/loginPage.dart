@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:healingapp/services/authHelper.dart';
+import 'package:healingapp/userServices/SignUpPage.dart';
 import 'package:healingapp/userServices/forgetPassword.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
@@ -148,6 +149,25 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                     )),
+                Row(
+                  children: <Widget>[
+                    const Text('don\'t have account?'),
+                    TextButton(
+                      child: const Text(
+                        'SignUp',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        //signup screen
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()));
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
               ],
             )),
       ),
