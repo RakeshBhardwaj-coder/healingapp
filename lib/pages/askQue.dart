@@ -1,21 +1,40 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:healingapp/model/userCardAPI.dart';
+import 'package:healingapp/model/userCardModel.dart';
+import 'package:healingapp/model/userModel.dart';
 import 'package:healingapp/pages/yourQue.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:healingapp/utils/userAskQuePreferences.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AskQue extends StatefulWidget {
-  const AskQue({Key? key}) : super(key: key);
+  AskQue({Key? key}) : super(key: key);
 
   @override
   _AskQueState createState() => _AskQueState();
 }
 
+final FirebaseAuth auth = FirebaseAuth.instance;
+int index = 0;
+
 class _AskQueState extends State<AskQue> {
+  // late UserAskQuePreferences userAsked;
+  @override
+  void initState() {
+    super.initState();
+
+    // userAsked = UserAskQuePreferences.getUser();
+  }
+
   FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference ref = FirebaseDatabase.instance.ref("User/123");
-  String? ttl, sub, desc;
+  DatabaseReference ref = FirebaseDatabase.instance.ref('User');
+
+  var user = FirebaseAuth.instance.currentUser;
+
+  String? ttl, sub, prob, howWeHelp;
   String? dropdownValue;
   PickedFile? imageFile = null;
 
@@ -48,7 +67,7 @@ class _AskQueState extends State<AskQue> {
           actions: <Widget>[
             IconButton(
               //send Button to database
-              
+
               icon: Icon(
                 Icons.send,
                 color: Colors.white,
@@ -60,151 +79,192 @@ class _AskQueState extends State<AskQue> {
                 );
 
                 // do something
-                writeDataToDatabase('$ttl', '$sub', '$desc');
+                // writeDataToDatabase('$ttl', '$sub', '$desc');
 
                 //
               },
             )
           ],
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  child: TextField(
-                      // obscureText: true,
-                      decoration: InputDecoration(
-                        // focusColor: Colors.red,
-                        border: OutlineInputBorder(),
-                        labelText: 'Title',
-                      ),
-                      style: TextStyle(
-                        fontFamily: 'Arial',
-                        fontSize: 20.0,
-                      ),
-                      onChanged: (getTitle) {
-                        ttl = getTitle;
-                        // print('$ttl');
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Expanded(
-                    child: DropdownSearch<String>(
-                      dropdownSearchDecoration: InputDecoration(
-                        // isCollapsed: true,
-                        // isDense: true,
-
-                        hintText: "Select Option",
-                        labelText: "Your Problem realted to",
-                        contentPadding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-
-                        border: OutlineInputBorder(),
-                      ),
-                      mode: Mode.DIALOG,
-                      // maxHeight: 2000,
-                      showSearchBox: true,
-                      showSelectedItems: true,
-                      // showClearButton: true,
-                      items: _subjects,
-                      // onFind: _subjects,
-                      // popupItemDisabled: (String s) => s.startsWith("V"),
-
-                      onChanged: print,
+        body: ListView(
+          physics: ClampingScrollPhysics(),
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: TextField(
+                          // obscureText: true,
+                          decoration: InputDecoration(
+                            // focusColor: Colors.red,
+                            border: OutlineInputBorder(),
+                            labelText: 'Title',
+                          ),
+                          style: TextStyle(
+                            fontFamily: 'Arial',
+                            fontSize: 20.0,
+                          ),
+                          onChanged: (getTitle) {
+                            ttl = getTitle;
+                            // print('$ttl');
+                          }),
                     ),
-                  ),
-                ),
-                // GridView.count(
-                //     crossAxisCount: 2,
-                //     // Generate 100 widgets that display their index in the List.
-                //     children: List.generate(
-                //       100,
-                //       (index) {
-                //         return Center(
-                //           child: Text(
-                //             'Item $index',
-                //             style: Theme.of(context).textTheme.headline5,
-                //           ),
-                //         );
-                //       },
-                //     )),
-                // Container(
-                //   child: SearchableDropdown.single(
-                //     //  items: _subjects,
-                //     value: _subjects,
-                //     hint: "Select one",
-                //     searchHint: "Select one",
-                //     onChanged: print,
-                //     // (value) {
-                //     //   setState(() {
-                //     //     dropdownValue = value;
-                //     //   });
-                //     // },
-                //     isExpanded: true,
-                //   ),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: TextFormField(
-                    textAlign: TextAlign.left,
-                    // controller: _Textcontroller,
-                    minLines: 2,
-                    maxLines: 8,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                        isDense: false,
-                        labelText: "Say your Problem in (90 words)",
-                        hintStyle: TextStyle(color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        )),
-                    onChanged: (getDesc) {
-                      desc = getDesc;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: TextFormField(
-                    textAlign: TextAlign.left,
-                    // controller: _Textcontroller,
-                    minLines: 2,
-                    maxLines: 8,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                        isDense: false,
-                        labelText: "How we can help you...",
-                        hintStyle: TextStyle(color: Colors.grey),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        )),
-                    onChanged: (getDesc) {
-                      desc = getDesc;
-                    },
-                  ),
-                ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Expanded(
+                        child: DropdownSearch<String>(
+                            dropdownSearchDecoration: InputDecoration(
+                              // isCollapsed: true,
+                              // isDense: true,
 
-                // Container(
-                //     //   alignment: Alignment.topLeft,
-                //     //   child: IconButton(
-                //     //     onPressed: () => _showChoiceDialog(context),
-                //     //     icon: Icon(
-                //     //       Icons.add_a_photo,
-                //     //       size: 70,
-                //     //     ),
-                //     //   ),
-                //     // image:  Image.network(
-                //     //   'https://icons-for-free.com/iconfiles/png/512/gallery+image+landscape+mobile+museum+open+line+icon-1320183049020185924.png',
-                //     //   height: 150,
-                //     // ),
+                              hintText: "Select Option",
+                              labelText: "Your Problem realted to",
+                              contentPadding: EdgeInsets.fromLTRB(10, 10, 0, 0),
 
-                //     ),
-              ],
+                              border: OutlineInputBorder(),
+                            ),
+                            mode: Mode.DIALOG,
+                            // maxHeight: 2000,
+                            showSearchBox: true,
+                            showSelectedItems: true,
+                            // showClearButton: true,
+                            items: _subjects,
+                            // onFind: _subjects,
+                            // popupItemDisabled: (String s) => s.startsWith("V"),
+
+                            onChanged: (getsub) {
+                              sub = getsub;
+                            }),
+                      ),
+                    ),
+                    // GridView.count(
+                    //     crossAxisCount: 2,
+                    //     // Generate 100 widgets that display their index in the List.
+                    //     children: List.generate(
+                    //       100,
+                    //       (index) {
+                    //         return Center(
+                    //           child: Text(
+                    //             'Item $index',
+                    //             style: Theme.of(context).textTheme.headline5,
+                    //           ),
+                    //         );
+                    //       },
+                    //     )),
+                    // Container(
+                    //   child: SearchableDropdown.single(
+                    //     //  items: _subjects,
+                    //     value: _subjects,
+                    //     hint: "Select one",
+                    //     searchHint: "Select one",
+                    //     onChanged: print,
+                    //     // (value) {
+                    //     //   setState(() {
+                    //     //     dropdownValue = value;
+                    //     //   });
+                    //     // },
+                    //     isExpanded: true,
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        // controller: _Textcontroller,
+                        minLines: 2,
+                        maxLines: 8,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                            isDense: false,
+                            labelText: "Say your Problem in (90 words)",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            )),
+                        onChanged: (getDesc) {
+                          prob = getDesc;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        // controller: _Textcontroller,
+                        minLines: 2,
+                        maxLines: 8,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                            isDense: false,
+                            labelText: "How we can help you...",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            )),
+                        onChanged: (getHowWeHelp) {
+                          howWeHelp = getHowWeHelp;
+                        },
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent[700],
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0),
+                              topLeft: Radius.circular(10.0),
+                              bottomLeft: Radius.circular(10.0)),
+                        ),
+                        child: MaterialButton(
+                          child: Text(
+                            "Send",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () async {
+                            final uid = user?.uid;
+                            // UserAskQuePreferences.setAskUser(userAsked);
+                            // addToCard(cardDetails);
+                            UserCardAPI.createCard(UserAskCardModel(
+                              title: '$ttl',
+                              subject: '$sub',
+                              problem: '$prob',
+                              howWeHelp: '$howWeHelp',
+                              id: '$uid',
+                              name: 'rakesh',
+                              createdTime: DateTime.now(),
+                            ));
+
+                            // // UserCardAPI.createCard(cardModel);
+                            // if (index != 0) {
+                            //   print('l');
+
+                            //   // createData(uid);
+                            //   // readData(uid);
+                            // }
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => bottomNavigatorBar(),
+                                ));
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
 
 // floatingActionButton: FloatingActionButton(onPressed: (){},tooltip:'increment',child: Icon(Icons.add),),
@@ -215,6 +275,46 @@ class _AskQueState extends State<AskQue> {
   //clear text
   void clearText() {
     // fieldText.clear();
+  }
+  void addToCard(UserAskCardModel cardModel) =>
+      UserCardAPI.createCard(cardModel);
+  // void createData(uid) {
+  //   ref.child("$uid/$index").set({
+  //     'title': '$ttl',
+  //     'subject': '$sub',
+  //     'problem': '$prob',
+  //     'how we can help': '$howWeHelp'
+  //   });
+  // }
+  // final cardDetails = UserAskCardModel(title: ttl, subject: sub, problem: prob howWeHelp: howWeHelp, id: uid);
+
+  void readData(uid) async {
+    final title = await ref.child('$uid/1/title').get();
+    final l = title.value;
+    print(l);
+    final subject = await ref.child('$uid/1/subject').get();
+  }
+
+  void updateData(
+      uid, String title, String subject, String problem, String howWeHelp) {
+    final postData = {
+      'title': title,
+      'subject': subject,
+      'problem': problem,
+      'howWeHelp': howWeHelp,
+    };
+
+    // Get a key for a new Post.
+    final newPostKey =
+        FirebaseDatabase.instance.ref().child('posts').push().key;
+
+    // Write the new post's data simultaneously in the posts list and the
+    // user's post list.
+    final Map<String, Map> updates = {};
+    updates['/posts/$newPostKey'] = postData;
+    updates['/user-posts/$uid/$newPostKey'] = postData;
+
+    ref.child('$uid').update(updates);
   }
 
   writeDataToDatabase(

@@ -4,63 +4,49 @@ import 'package:healingapp/model/userModel.dart';
 
 class UserAskCardModel {
   String title;
+  String subject;
   String problem;
-  String howWeCanHelp;
-  
+  String howWeHelp;
+  String id;
+  String name;
+  DateTime createdTime;
+
   UserAskCardModel({
     required this.title,
+    required this.subject,
     required this.problem,
-    required this.howWeCanHelp,
+    required this.howWeHelp,
+    required this.id,
+    required this.name,
+    required this.createdTime,
   });
-  
-
-
-  UserAskCardModel copyWith({
-    String? title,
-    String? problem,
-    String? howWeCanHelp,
-  }) {
-    return UserAskCardModel(
-      title: title ?? this.title,
-      problem: problem ?? this.problem,
-      howWeCanHelp: howWeCanHelp ?? this.howWeCanHelp,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
       'title': title,
+      'subject': subject,
       'problem': problem,
-      'howWeCanHelp': howWeCanHelp,
+      'howWeHelp': howWeHelp,
+      'id': id,
+      'name': name,
+      'createdTime': createdTime.millisecondsSinceEpoch,
     };
   }
 
-  factory UserAskCardModel.fromMap(Map<String, dynamic> map) {
+  static UserAskCardModel fromMap(Map<String, dynamic> map) {
     return UserAskCardModel(
       title: map['title'] ?? '',
+      subject: map['subject'] ?? '',
       problem: map['problem'] ?? '',
-      howWeCanHelp: map['howWeCanHelp'] ?? '',
+      howWeHelp: map['howWeHelp'] ?? '',
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      createdTime: DateTime.fromMillisecondsSinceEpoch(map['createdTime']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserAskCardModel.fromJson(String source) => UserAskCardModel.fromMap(json.decode(source));
-
-  @override
-  String toString() => 'UserAskCardModel(title: $title, problem: $problem, howWeCanHelp: $howWeCanHelp)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-  
-    return other is UserAskCardModel &&
-      other.title == title &&
-      other.problem == problem &&
-      other.howWeCanHelp == howWeCanHelp;
-  }
-
-  @override
-  int get hashCode => title.hashCode ^ problem.hashCode ^ howWeCanHelp.hashCode;
-
+  factory UserAskCardModel.fromJson(String source) =>
+      UserAskCardModel.fromMap(json.decode(source));
 }

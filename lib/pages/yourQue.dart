@@ -15,7 +15,7 @@ class yourQue extends StatefulWidget {
 }
 
 class _yourQueState extends State<yourQue> {
-  DatabaseReference ref = FirebaseDatabase.instance.ref("User/123");
+  DatabaseReference ref = FirebaseDatabase.instance.ref("User");
 
   //// try to read database through function...........
   // readDataFromDatabase() async {
@@ -40,14 +40,13 @@ class _yourQueState extends State<yourQue> {
   //   return title;
   // }
   Future<void> databaseTitle() async {
-    DatabaseReference tit = FirebaseDatabase.instance.ref('User/123/title');
-    final event = await tit.once(DatabaseEventType.value);
-    final String title = event.snapshot.value.toString();
+    // DatabaseReference tit = FirebaseDatabase.instance.ref('User');
+    // final event = await tit.once(DatabaseEventType.value);
+    // final String title = event.snapshot.value.toString();
     // itemRef = database.reference().child('Test');
   }
 
   final Future<FirebaseApp> _future = Firebase.initializeApp();
-  var userId = 123;
   // String tii = databaseTitle().toString();
 
   final List<String> imageList = [

@@ -3,6 +3,7 @@ import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/pages/categories.dart';
 import 'package:healingapp/pages/helpUs.dart';
 import 'package:healingapp/pages/HomePage.dart';
+import 'package:healingapp/pages/tryDataShow.dart';
 import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/pages/news_Page.dart';
 import 'package:healingapp/pages/yourQue.dart';
@@ -20,7 +21,7 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    CategoriesPage(),
+    tryDataShow(),
     AskQue(),
     HelpUs()
   ];
