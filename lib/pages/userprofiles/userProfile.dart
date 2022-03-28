@@ -16,10 +16,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final user = UserPreferences.getUser();
+
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.getUser();
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -54,38 +54,42 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
 
-  Widget buildName(User user) => Column(
+Widget buildName(UserDetails user) => Column(
+      children: [
+        Text(
+          user.name,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          user.email,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white70),
+        ),
+      ],
+    );
+Widget buildAbout(UserDetails user) => Container(
+      padding: EdgeInsets.symmetric(horizontal: 48),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            user.name,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            'About',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white70),
           ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 16),
           Text(
-            user.email,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey),
+            user.about,
+            style: GoogleFonts.lato(fontSize: 18, color: Colors.white),
           ),
         ],
-      );
-  Widget buildAbout(User user) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 48),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'About',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              user.about,
-              style: GoogleFonts.lato(fontSize: 18),
-            ),
-          ],
-        ),
-      );
-}
+      ),
+    );

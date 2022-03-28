@@ -21,7 +21,6 @@ class AuthHelper {
     // await UserDetails(uid: user!.uid)
     //     .updateUserData('ram', userEmail!, userTitle!);
 
-
     // await AddUser(user.uid);
     // final User user = res.user;
     // return user;
@@ -43,6 +42,10 @@ class AuthHelper {
       idToken: googleAuth?.idToken,
     );
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<String> getCurrentUID() async {
+    return (await _auth.currentUser!.uid);
   }
 }
 

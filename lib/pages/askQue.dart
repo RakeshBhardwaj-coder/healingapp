@@ -64,27 +64,6 @@ class _AskQueState extends State<AskQue> {
               MaterialPageRoute(builder: (context) => bottomNavigatorBar()),
             ),
           ),
-          actions: <Widget>[
-            IconButton(
-              //send Button to database
-
-              icon: Icon(
-                Icons.send,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => yourQue()),
-                );
-
-                // do something
-                // writeDataToDatabase('$ttl', '$sub', '$desc');
-
-                //
-              },
-            )
-          ],
         ),
         body: ListView(
           physics: ClampingScrollPhysics(),
@@ -239,7 +218,7 @@ class _AskQueState extends State<AskQue> {
                               subject: '$sub',
                               problem: '$prob',
                               howWeHelp: '$howWeHelp',
-                              id: '$uid',
+                              mId: '$uid',
                               name: 'rakesh',
                               createdTime: DateTime.now(),
                             ));

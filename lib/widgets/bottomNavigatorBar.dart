@@ -21,9 +21,9 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    tryDataShow(),
+    CategoriesPage(),
     AskQue(),
-    HelpUs()
+    CameraWidget()
   ];
   @override
   Widget build(BuildContext context) {

@@ -123,7 +123,9 @@ class CameraWidgetState extends State {
                             size: 30.0,
                           ),
                           onPressed: () {
-                            getImage();
+                            // getImage();
+                            // showDialog(context: context, builder: builder)
+                            _showChoiceDialog(context);
                           },
                         ),
                       ),

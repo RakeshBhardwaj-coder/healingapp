@@ -1,11 +1,14 @@
 import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/widgets/drawer.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,8 +21,14 @@ const userImageUrl =
     "https://raw.githubusercontent.com/RakeshBhardwaj-coder/RakeshBhardwaj.github.io/master/rks_logo.jpeg";
 
 class _HomePageState extends State<HomePage> {
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('User').snapshots();
+  // final userid = FirebaseAuth.instance.currentUser?.uid;
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('User')
+      .doc('$userid')
+      .collection('Message')
+      .snapshots();
+
+  static get userid => FirebaseAuth.instance.currentUser?.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +40,25 @@ class _HomePageState extends State<HomePage> {
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(userImageUrl),
-            )
+
+
+         
+          
+//            FutureBuilder(
+//              future: ,
+//              builder: (BuildContext (context, AsyncSnapshot<String> snapshot) {
+// if(snapshot.connectionState==ConnectionState.done && snapshot.hasData){
+//              return CircleAvatar(
+//               backgroundImage: NetworkImage(userImageUrl),
+//              );
+//              }
+//              if(snapshot.connectionState==ConnectionState.waiting){
+//                return CircularProgressIndicator();
+//              }
+//              return CircleAvatar();
+//            }))
+           
+          
           ],
         ),
       ),
@@ -61,30 +86,6 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w400,
                         color: Colors.black),
                   ),
-                  // Container(
-                  //   height: 250,
-                  //   child: StreamBuilder<QuerySnapshot>(
-                  //     stream: _usersStream,
-                  //     builder: (BuildContext context,
-                  //         AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //       if (snapshot.hasError) {
-                  //         return Text('Something went wrong');
-                  //       }
-                  //       if (snapshot.connectionState ==
-                  //           ConnectionState.waiting) {
-                  //         return Text("Loading");
-                  //       }
-                  //       final data = snapshot.requireData;
-                  //       return ListView.builder(
-                  //         itemCount: data.size,
-                  //         itemBuilder: (context, index) {
-                  //           return Text(
-                  //               'My Name is ${data.docs[index]['title']} and ');
-                  //         },
-                  //       );
-                  //     },
-                  //   ),
-                  // )
                 ],
               ),
             ),
@@ -137,18 +138,20 @@ class _HomePageState extends State<HomePage> {
                     return Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      height: 30,
-                      child: CircularProgressIndicator(),
-                    );
+                    return Text('Loading...');
                   }
                   final data = snapshot.requireData;
+                  final time = int.parse('${data.docs[index]['createdTime']}');
+                  final date = DateTime.fromMillisecondsSinceEpoch(time);
+                  var format = new DateFormat("d-M-y");
+                  var dateString = format.format(date);
+
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: data.size,
+                    itemCount: 1,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 10, left: 10),
                         height: 500,
                         width: 300,
                         decoration: BoxDecoration(
@@ -158,6 +161,7 @@ class _HomePageState extends State<HomePage> {
 
                         child: Expanded(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment:
@@ -181,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                                             left: 5.0, right: 5),
                                         child: Text(
                                           "${data.docs[index]['subject']}",
-                                          textAlign: TextAlign.start,
+                                          // textAlign: TextAlign.start,
                                           style: GoogleFonts.oswald(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w500,
@@ -198,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Rakesh",
+                                          "${data.docs[index]['name']}",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.lato(
@@ -207,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                               color: Colors.white),
                                         ),
                                         Text(
-                                          "25-03-2022",
+                                          "$dateString",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.lato(
@@ -227,14 +231,15 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 ],
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         top: 8.0, left: 16),
                                     child: Text(
-                                      "Title",
+                                      "Title:",
                                       style: GoogleFonts.lato(
                                         color: Colors.white70,
                                         fontSize: 18,
@@ -242,29 +247,32 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, top: 6.0),
-                                child: Expanded(
-                                  child: Text(
-                                    "${data.docs[index]['title']}",
-                                    maxLines: 2,
-                                    textAlign: TextAlign.left,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.inter(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16,
+                                        top: 6.0,
+                                        bottom: 6,
+                                        right: 5),
+                                    child: Expanded(
+                                      child: Text(
+                                        "${data.docs[index]['title']}",
+                                        maxLines: 2,
+                                        textAlign: TextAlign.right,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.inter(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                              Row(
+                              Column(
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 8.0, left: 16),
+                                        top: 8.0, left: 16, right: 6),
                                     child: Text(
                                       "Problem:",
                                       style: GoogleFonts.lato(
@@ -274,18 +282,18 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, top: 6.0, right: 5),
+                                    child: Text(
+                                      "${data.docs[index]['problem']}",
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ),
                                 ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, top: 6.0),
-                                child: Text(
-                                  "${data.docs[index]['problem']}",
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.inter(
-                                      color: Colors.white, fontSize: 20),
-                                ),
                               ),
                               SizedBox(
                                 height: 10,
@@ -293,6 +301,7 @@ class _HomePageState extends State<HomePage> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
                                         alignment: Alignment.topCenter,
