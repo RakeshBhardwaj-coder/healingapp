@@ -30,10 +30,11 @@ dependencies:
   animated_theme_switcher: ^2.0.6
   carousel_slider: ^4.0.0
   cloud_firestore: ^1.0.7
+  comment_box: ^0.0.17
   cupertino_icons: ^1.0.2
   device_info_plus: ^3.2.2
   dropdown_button2: ^1.2.2
-  dropdown_search: ^2.0.1
+  dropdown_search: ^2.0.1 
   file_picker: ^4.5.1
   firebase_analytics: ^9.1.2
   firebase_auth: ^3.3.11

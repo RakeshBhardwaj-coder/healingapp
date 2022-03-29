@@ -8,6 +8,7 @@ import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/pages/news_Page.dart';
 import 'package:healingapp/pages/yourQue.dart';
 import 'package:healingapp/try.dart';
+import 'package:healingapp/widgets/commentChildWidget.dart';
 // import 'package:healingapp/pages/yourQue.dart';
 
 class bottomNavigatorBar extends StatefulWidget {
@@ -22,7 +23,7 @@ class _bottomNavigatorBarState extends State<bottomNavigatorBar> {
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     CategoriesPage(),
-    AskQue(),
+    TestMe(),
     CameraWidget()
   ];
   @override

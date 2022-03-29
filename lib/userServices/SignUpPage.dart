@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:healingapp/services/authHelper.dart';
-// import 'package:healingapp/userServices/forgetPassword.dart';
 import 'package:healingapp/userServices/forgetPassword.dart';
 import 'package:healingapp/userServices/SignUpPage.dart';
 import 'package:healingapp/userServices/loginPage.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
+import 'package:healingapp/utils/scaffoldMsg.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key}) : super(key: key);
@@ -51,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'HealingApp',
+                      'Health Helper',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -115,20 +115,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       onChanged: (getTitle) {}),
                 ),
-                // TextButton(
-                //   onPressed: () {
-                //     //forgot password screen
-                //     Navigator.pushReplacement(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => ForgotPassword(),
-                //       ),
-                //     );
-                //   },
-                //   child: const Text(
-                //     'Forgot Password',
-                //   ),
-                // ),
                 MaterialButton(
                   color: Colors.lightBlue,
                   child: Text(
@@ -138,26 +124,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   onPressed: () async {
                     if (emailController.text.isEmpty ||
                         passwordController.text.isEmpty) {
-                      const snackBar = SnackBar(
-                        content: Text("Email and Password cannot be Empty",
-                            textAlign: TextAlign.center),
-                        backgroundColor: Colors.red,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      ScaffoldMsg.ErrorMsg(
+                          context, "Email and Password cannot be Empty");
 
                       print("Email and Password cannot be Empty");
                       return;
-                    }
-                    if (confirmPasswordController.text.isEmpty ||
+                    } else if (confirmPasswordController.text.isEmpty ||
                         confirmPasswordController.text !=
                             passwordController.text) {
-                      const snackBar = SnackBar(
-                        content: Text("Confirm password does not match",
-                            textAlign: TextAlign.center),
-                        backgroundColor: Colors.red,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      print("Confirm password does not match");
+                      print('Confirm password does not match');
+                      ScaffoldMsg.ErrorMsg(
+                          context, "Confirm password does not match");
                       return;
                     }
                     try {
@@ -172,30 +149,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LoginPage()));
-                        const snackBar = SnackBar(
-                          content: Text(
-                            "SignUp Successfully",
-                            textAlign: TextAlign.center,
-                          ),
-                          backgroundColor: Colors.lightBlue,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        print("SignUp Successfully");
+                        ScaffoldMsg.SuccessMsg(context, "SignUp Successfully");
+                        print('SignUp Successfully');
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Colors.red,
-                          content: Text(
-                            e.toString(),
-                            textAlign: TextAlign.center,
-                          )));
+                      // ScaffoldMsg.ErrorMsg(context, e);
                       print(e);
                     }
-
-                    // _formKey.currentState?.reset();
-
-                    // registration();
-                    // clear();
                   },
                 ),
                 Row(
@@ -218,26 +178,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
                 Divider(),
-                // MaterialButton(
-                //     child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           Container(
-                //             height: 30,
-                //             width: 30,
-                //             decoration: BoxDecoration(
-                //                 image: DecorationImage(
-                //                     image: NetworkImage(
-                //                         'https://pbs.twimg.com/profile_images/1455185376876826625/s1AjSxph_400x400.jpg'),
-                //                     fit: BoxFit.cover),
-                //                 shape: BoxShape.circle),
-                //           ),
-                //           SizedBox(
-                //             width: 20,
-                //           ),
-                //           Text("Sign In with Google")
-                //         ]),
-                //     onPressed: () {})
               ],
             )),
       ),

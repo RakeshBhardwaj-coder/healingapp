@@ -18,7 +18,7 @@ class AskQue extends StatefulWidget {
 }
 
 final FirebaseAuth auth = FirebaseAuth.instance;
-int index = 0;
+// int index = 0;
 
 class _AskQueState extends State<AskQue> {
   // late UserAskQuePreferences userAsked;
@@ -119,35 +119,6 @@ class _AskQueState extends State<AskQue> {
                             }),
                       ),
                     ),
-                    // GridView.count(
-                    //     crossAxisCount: 2,
-                    //     // Generate 100 widgets that display their index in the List.
-                    //     children: List.generate(
-                    //       100,
-                    //       (index) {
-                    //         return Center(
-                    //           child: Text(
-                    //             'Item $index',
-                    //             style: Theme.of(context).textTheme.headline5,
-                    //           ),
-                    //         );
-                    //       },
-                    //     )),
-                    // Container(
-                    //   child: SearchableDropdown.single(
-                    //     //  items: _subjects,
-                    //     value: _subjects,
-                    //     hint: "Select one",
-                    //     searchHint: "Select one",
-                    //     onChanged: print,
-                    //     // (value) {
-                    //     //   setState(() {
-                    //     //     dropdownValue = value;
-                    //     //   });
-                    //     // },
-                    //     isExpanded: true,
-                    //   ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16),
                       child: TextFormField(
@@ -190,7 +161,6 @@ class _AskQueState extends State<AskQue> {
                         },
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Container(

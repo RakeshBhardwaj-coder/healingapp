@@ -6,7 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:healingapp/model/userModel.dart';
+import 'package:healingapp/userServices/loginPage.dart';
+import 'package:healingapp/utils/scaffoldMsg.dart';
 import 'package:healingapp/utils/userPreferences.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/widgets/buttonWidget.dart';
 import 'package:healingapp/widgets/profileWidget.dart';
 import 'package:healingapp/widgets/textFieldWidget.dart';
@@ -44,11 +47,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
   File? _image;
   File? _profileImage;
   PickedFile? pickedFile;
+  // final profileImageDownloadURL = firebase_storage.FirebaseStorage.instance
+  //     .refFromURL('gs://healingapp-72930.appspot.com/profileImages').getDownloadURL();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
+          // onPressed: () => Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => bottomNavigatorBar(),
+          //     )),
           color: Colors.black,
         ),
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
@@ -81,7 +91,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             TextFieldWidget(
                 label: 'Full Name',
-                text: user.name,
+                hintText: 'Enter your name',
                 onChanged: (name) {
                   user = user.copyWith(name: name);
                   uName = name;
@@ -91,7 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             TextFieldWidget(
               label: 'Email',
-              text: user.email,
+              hintText: 'Enter your email',
               onChanged: (email) {
                 uEmail = email;
                 user = user.copyWith(email: email);
@@ -102,7 +112,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             TextFieldWidget(
               label: 'About',
-              text: user.about,
+              hintText: 'Write about yourself',
               maxLines: 4,
               onChanged: (about) {
                 uAbout = about;
@@ -235,7 +245,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (fileName == null) return;
 
     // firebase_storage.TaskSnapshot snapshot = await firebase_storage.UploadTask;
-//levra2
     try {
       firebase_storage.Reference ref = FirebaseStorage.instance
           .ref()
@@ -246,13 +255,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       // // final ref = firebase_storage.FirebaseStorage.instance.ref(destination);
       setState(() {
         print("profile Updated.");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.lightBlue[400],
-            content: Text(
-              "profile Updated.",
-              style: TextStyle(
-                  fontSize: 18, color: Color.fromARGB(255, 255, 255, 255)),
-            )));
+        ScaffoldMsg.SuccessMsg(context, 'Profile Updated');
       });
       //  StorageUploadTask uploadTask = ref.putFile(File(filaName));
       // ref.putFile(File(fileName));

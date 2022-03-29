@@ -47,9 +47,9 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(
             height: 24,
           ),
-          buildName(user),
+          buildNameBlackColor(user),
           const SizedBox(height: 48),
-          buildAbout(user),
+          buildAboutBlackColor(user),
         ],
       ),
     );
@@ -73,6 +73,28 @@ Widget buildName(UserDetails user) => Column(
         ),
       ],
     );
+
+Widget buildNameBlackColor(UserDetails user) => Column(
+      children: [
+        Text(
+          user.name,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Color.fromARGB(255, 0, 0, 0)),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          user.email,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: Color.fromARGB(179, 0, 0, 0)),
+        ),
+      ],
+    );
 Widget buildAbout(UserDetails user) => Container(
       padding: EdgeInsets.symmetric(horizontal: 48),
       child: Column(
@@ -89,6 +111,27 @@ Widget buildAbout(UserDetails user) => Container(
           Text(
             user.about,
             style: GoogleFonts.lato(fontSize: 18, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+Widget buildAboutBlackColor(UserDetails user) => Container(
+      padding: EdgeInsets.symmetric(horizontal: 48),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(179, 0, 0, 0)),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            user.about,
+            style: GoogleFonts.lato(
+                fontSize: 18, color: Color.fromARGB(255, 0, 0, 0)),
           ),
         ],
       ),

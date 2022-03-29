@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:healingapp/pages/blogPage.dart';
 import 'package:healingapp/pages/userprofiles/editProfilePage.dart';
 import 'package:healingapp/pages/userprofiles/userProfile.dart';
 import 'package:healingapp/utils/userPreferences.dart';
@@ -102,7 +103,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Colors.white,
               ),
               title: Text(
-                "Edit Profile",
+                "Your Profile",
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -112,28 +113,35 @@ class _MyDrawerState extends State<MyDrawer> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditProfilePage(),
+                      builder: (context) => ProfilePage(),
                     ));
 
                 // Navigator.pop(context);
               },
             ),
-            // ListTile(
-            //   leading: Icon(
-            //     CupertinoIcons.mail,
-            //     color: Colors.white,
-            //   ),
-            //   title: Text(
-            //     "SignOut",
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            //   onTap: () async {
-            //     // Update the state of the app.
-            //     // ...
-            //   },
-            // ),
+            ListTile(
+              leading: Icon(
+                CupertinoIcons.plus_app,
+                color: Colors.white,
+              ),
+              title: Text(
+                "Health Blog",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onTap: () {
+                // Update the state of the app.
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlogPage(),
+                    ));
+
+                // Navigator.pop(context);
+              },
+            ),
+
             SizedBox(
               height: 100,
             ),
@@ -142,15 +150,6 @@ class _MyDrawerState extends State<MyDrawer> {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  // decoration: BoxDecoration(
-                  //   // color: Colors.blueAccent[700],
-                  //   borderRadius: BorderRadius.only(
-                  //     topRight: Radius.circular(10.0),
-                  //     bottomRight: Radius.circular(10.0),
-                  //     topLeft: Radius.circular(10.0),
-                  //     bottomLeft: Radius.circular(10.0),
-                  //   ),
-                  // ),
                   child: OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),

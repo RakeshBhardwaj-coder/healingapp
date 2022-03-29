@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:healingapp/services/authHelper.dart';
 import 'package:healingapp/userServices/SignUpPage.dart';
 import 'package:healingapp/userServices/forgetPassword.dart';
-import 'package:healingapp/services/authHelper.dart';
+import 'package:healingapp/utils/scaffoldMsg.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +12,14 @@ class LoginPage extends StatefulWidget {
 
   @override
   _LoginPageState createState() => _LoginPageState();
+}
+
+@override
+void initState() {
+  ScaffoldMsg();
+  // super.initState();
+  // simulateRequest();
+  print('This is the initial state.');
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -35,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: const Text(
-                      'HealingApp',
+                      'Health Helper',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -54,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                     controller: emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        ScaffoldMsg.ErrorMsg(
+                            context, "Please enter your email address...");
                       }
                       return null;
                     },
@@ -72,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
                       MinLengthValidator(6,
-                          errorText: "Password should be atleast 6 characters"),
+                          errorText: 'Password should not be less than 6'),
                       MaxLengthValidator(15,
                           errorText:
                               "Password should not be greater than 15 characters")
@@ -110,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
 
                         if (emailController.text.isEmpty ||
                             passwordController.text.isEmpty) {
-                          print("Email and Password cannot be Empty");
+                          ScaffoldMsg.ErrorMsg(
+                              context, 'Email and Password cannot be Empty');
                           return;
                         }
 
@@ -129,6 +137,11 @@ class _LoginPageState extends State<LoginPage> {
                           // }
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('A SnackBar has been shown.'),
+                              ),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: Colors.orangeAccent,
                                 content: Text(
