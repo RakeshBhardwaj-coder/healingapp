@@ -4,8 +4,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:healingapp/model/userCardAPI.dart';
 import 'package:healingapp/model/userCardModel.dart';
 import 'package:healingapp/model/userModel.dart';
-import 'package:healingapp/pages/yourQue.dart';
+import 'package:healingapp/userServices/yourQue.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:healingapp/utils/getFirstName.dart';
 import 'package:healingapp/utils/userAskQuePreferences.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +25,8 @@ class _AskQueState extends State<AskQue> {
   // late UserAskQuePreferences userAsked;
   @override
   void initState() {
+    GetFirstName.getFirstName();
+    GetFirstName.name;
     super.initState();
 
     // userAsked = UserAskQuePreferences.getUser();
@@ -34,7 +37,7 @@ class _AskQueState extends State<AskQue> {
 
   var user = FirebaseAuth.instance.currentUser;
 
-  String? ttl, sub, prob, howWeHelp;
+  String? ttl, sub, prob, howWeHelp, naam;
   String? dropdownValue;
   PickedFile? imageFile = null;
 
@@ -189,7 +192,7 @@ class _AskQueState extends State<AskQue> {
                               problem: '$prob',
                               howWeHelp: '$howWeHelp',
                               mId: '$uid',
-                              name: 'rakesh',
+                              name: '${GetFirstName.name}',
                               createdTime: DateTime.now(),
                             ));
 
@@ -222,11 +225,11 @@ class _AskQueState extends State<AskQue> {
   }
 
   //clear text
-  void clearText() {
-    // fieldText.clear();
-  }
-  void addToCard(UserAskCardModel cardModel) =>
-      UserCardAPI.createCard(cardModel);
+  // void clearText() {
+  //   // fieldText.clear();
+  // }
+  // void addToCard(UserAskCardModel cardModel) =>
+  //     UserCardAPI.createCard(cardModel);
   // void createData(uid) {
   //   ref.child("$uid/$index").set({
   //     'title': '$ttl',
@@ -237,52 +240,52 @@ class _AskQueState extends State<AskQue> {
   // }
   // final cardDetails = UserAskCardModel(title: ttl, subject: sub, problem: prob howWeHelp: howWeHelp, id: uid);
 
-  void readData(uid) async {
-    final title = await ref.child('$uid/1/title').get();
-    final l = title.value;
-    print(l);
-    final subject = await ref.child('$uid/1/subject').get();
-  }
+  // void readData(uid) async {
+  //   final title = await ref.child('$uid/1/title').get();
+  //   final l = title.value;
+  //   print(l);
+  //   final subject = await ref.child('$uid/1/subject').get();
+  // }
 
-  void updateData(
-      uid, String title, String subject, String problem, String howWeHelp) {
-    final postData = {
-      'title': title,
-      'subject': subject,
-      'problem': problem,
-      'howWeHelp': howWeHelp,
-    };
+  // void updateData(
+  //     uid, String title, String subject, String problem, String howWeHelp) {
+  //   final postData = {
+  //     'title': title,
+  //     'subject': subject,
+  //     'problem': problem,
+  //     'howWeHelp': howWeHelp,
+  //   };
 
-    // Get a key for a new Post.
-    final newPostKey =
-        FirebaseDatabase.instance.ref().child('posts').push().key;
+  // Get a key for a new Post.
+  // final newPostKey =
+  //     FirebaseDatabase.instance.ref().child('posts').push().key;
 
-    // Write the new post's data simultaneously in the posts list and the
-    // user's post list.
-    final Map<String, Map> updates = {};
-    updates['/posts/$newPostKey'] = postData;
-    updates['/user-posts/$uid/$newPostKey'] = postData;
+  // Write the new post's data simultaneously in the posts list and the
+  // user's post list.
+  //   final Map<String, Map> updates = {};
+  //   updates['/posts/$newPostKey'] = postData;
+  //   updates['/user-posts/$uid/$newPostKey'] = postData;
 
-    ref.child('$uid').update(updates);
-  }
+  //   ref.child('$uid').update(updates);
+  // }
 
-  writeDataToDatabase(
-    String title,
-    String subject,
-    String problem,
-  ) async {
-    await ref.set({
-      "title": "$title",
-      "subject": "$subject",
-      "problem": "$problem"
-    }).then((_) {
-      // Data saved successfully!
-      print("Data Saved Successflly");
-    }).catchError((error) {
-      // The write failed...
-      print("Error occured.");
-    });
-  }
+  // writeDataToDatabase(
+  //   String title,
+  //   String subject,
+  //   String problem,
+  // ) async {
+  //   await ref.set({
+  //     "title": "$title",
+  //     "subject": "$subject",
+  //     "problem": "$problem"
+  //   }).then((_) {
+  //     // Data saved successfully!
+  //     print("Data Saved Successflly");
+  //   }).catchError((error) {
+  //     // The write failed...
+  //     print("Error occured.");
+  //   });
+  // }
 
   void _openGallery(BuildContext context) async {
     final pickedFile = await ImagePicker().getImage(

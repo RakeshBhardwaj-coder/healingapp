@@ -143,7 +143,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
 
             SizedBox(
-              height: 100,
+              height: 80,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

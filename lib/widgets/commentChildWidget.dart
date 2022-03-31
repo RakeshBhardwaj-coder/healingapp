@@ -1,22 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
-import 'package:healingapp/userServices/profileImageDatabase.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:healingapp/features/CommentWriten.dart';
+import 'package:healingapp/model/CommentModel.dart';
+import 'package:healingapp/model/CommentModelAPI.dart';
+import 'package:healingapp/userServices/yourQue.dart';
+import 'package:healingapp/utils/getCurrentUserId.dart';
+import 'package:healingapp/utils/getFirstName.dart';
+import 'package:healingapp/utils/profileImageDatabase.dart';
+import 'package:healingapp/utils/navigatePage.dart';
+import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 
-class TestMe extends StatefulWidget {
+class CommentBoxWidget extends StatefulWidget {
   @override
-  _TestMeState createState() => _TestMeState();
+  _CommentBoxWidgetState createState() => _CommentBoxWidgetState();
 }
 
-class _TestMeState extends State<TestMe> {
+class _CommentBoxWidgetState extends State<CommentBoxWidget> {
+  final docCommentModel = FirebaseFirestore.instance
+      .collection('User')
+      .doc('${GetCurrentUserId.currentUserId}')
+      .collection('Message')
+      .doc('KepqjAWcolUFzkPGorEL')
+      .collection('Comments')
+      .snapshots();
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
   List filedata = [
-    {
-      'name': 'Adeleye Ayodeji',
-      'pic':
-          'https://firebasestorage.googleapis.com/v0/b/healingapp-72930.appspot.com/o/profileImages%2Fo5XcMJsAgPYjNEpmXlDoDU4E2fl2?alt=media&token=f9b1cb41-4c73-4627-b4af-c88a869bc9b1',
-      'message': 'I love to code'
-    },
     {
       'name': 'Biggi Man',
       'pic': 'https://picsum.photos/300/30',
@@ -33,48 +44,72 @@ class _TestMeState extends State<TestMe> {
       'message': 'Very cool'
     },
   ];
-
-  Widget commentChild(data) {
-    return ListView(
-      children: [
-        for (var i = 0; i < data.length; i++)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {
-                  // Display the image in large form.
-                  print("Comment Clicked");
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: new BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(data[i]['pic'] + "$i")),
-                ),
-              ),
-              title: Text(
-                data[i]['name'],
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(data[i]['message']),
-            ),
-          )
-      ],
-    );
+  @override
+  void initState() {
+    // TODO: implement initState
+    GetFirstName.getFirstName();
+    GetFirstName.name;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () => NavigatePage.pageNavigator(context, yourQue()),
+        ),
+      ),
       body: Container(
         child: CommentBox(
           userImage: "${ProfileImageDatabase.downloadURL}",
-          child: commentChild(filedata),
+          child: ListView(
+            children: [
+              for (var i = 0; i < filedata.length; i++)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+                  child: Container(
+                    child: ListTile(
+                      leading: GestureDetector(
+                        onTap: () async {
+                          // Display the image in large form.
+                          print("Comment Clicked");
+                        },
+                        child: Container(
+                          height: 45.0,
+                          width: 45.0,
+                          decoration: new BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(50))),
+                          child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  NetworkImage(filedata[i]['pic'] + "$i")),
+                        ),
+                      ),
+                      title: Text(
+                        filedata[i]['name'], //data[i]['name']
+                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Expanded(
+                        child: Text(
+                          filedata[i]['message'],
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.lato(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 19),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+            ],
+          ),
           labelText: 'Write a comment...',
           withBorder: false,
           errorText: 'Comment cannot be blank',
@@ -89,6 +124,12 @@ class _TestMeState extends State<TestMe> {
                   'message': commentController.text
                 };
                 filedata.insert(0, value);
+                CommentWriten(filedata.length);
+                CommentModelAPI.createComment(CommentModel(
+                    userId: GetCurrentUserId.currentUserId,
+                    // commId: '123',
+                    userName: GetFirstName.name,
+                    commitMsg: commentController.text));
               });
               commentController.clear();
               FocusScope.of(context).unfocus();
@@ -106,3 +147,68 @@ class _TestMeState extends State<TestMe> {
     );
   }
 }
+
+// StreamBuilder<QuerySnapshot>(
+//               stream: docCommentModel,
+//               builder: (BuildContext context,
+//                   AsyncSnapshot<QuerySnapshot> snapshot) {
+//                 if (snapshot.hasError) {
+//                   return Text('Something went wrong');
+//                 }
+//                 if (snapshot.connectionState == ConnectionState.waiting) {
+//                   return Text('Name is Loading...');
+//                 }
+//                 final data = snapshot.requireData;
+//                 return ListView.builder(
+//                   // scrollDirection: Axis.horizontal,
+//                   itemCount: data.size,
+//                   itemBuilder: (context, index) {
+//                     return ListView(
+//                       children: [
+//                         for (var i = 0; i < filedata.length; i++)
+//                           Padding(
+//                             padding:
+//                                 const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+//                             child: Container(
+//                               child: ListTile(
+//                                 leading: GestureDetector(
+//                                   onTap: () async {
+//                                     // Display the image in large form.
+//                                     print("Comment Clicked");
+//                                   },
+//                                   child: Container(
+//                                     height: 50.0,
+//                                     width: 50.0,
+//                                     decoration: new BoxDecoration(
+//                                         color: Colors.blue,
+//                                         borderRadius: new BorderRadius.all(
+//                                             Radius.circular(50))),
+//                                     child: CircleAvatar(
+//                                         radius: 50,
+//                                         backgroundImage: NetworkImage(
+//                                             filedata[i]['pic'] + "$i")),
+//                                   ),
+//                                 ),
+//                                 title: Text(
+//                                   filedata[i]['name'], //data[i]['name']
+//                                   style: GoogleFonts.inter(
+//                                       fontWeight: FontWeight.w600),
+//                                 ),
+//                                 subtitle: Expanded(
+//                                   child: Text(
+//                                     filedata[i]['message'],
+//                                     textAlign: TextAlign.left,
+//                                     style: GoogleFonts.lato(
+//                                         color: Colors.black87,
+//                                         fontWeight: FontWeight.w500,
+//                                         fontSize: 19),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                       ],
+//                     ); //levra
+//                   },
+//                 );
+//               }),

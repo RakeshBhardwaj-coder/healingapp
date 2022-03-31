@@ -6,15 +6,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:healingapp/features/CommentWriten.dart';
+import 'package:healingapp/features/WatchMessage.dart';
+import 'package:healingapp/features/getLikes.dart';
+import 'package:healingapp/model/LikeModel.dart';
+import 'package:healingapp/model/LikeModelAPI.dart';
+import 'package:healingapp/model/WatchModel.dart';
+import 'package:healingapp/model/WatchModleAPI.dart';
 import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/pages/blogPage.dart';
-import 'package:healingapp/pages/yourQue.dart';
-import 'package:healingapp/userServices/profileImageDatabase.dart';
+import 'package:healingapp/userServices/yourQue.dart';
+import 'package:healingapp/utils/getCurrentUserId.dart';
+import 'package:healingapp/utils/profileImageDatabase.dart';
+import 'package:healingapp/utils/getFirstName.dart';
 import 'package:healingapp/utils/navigatePage.dart';
 import 'package:healingapp/widgets/commentChildWidget.dart';
 import 'package:healingapp/widgets/drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:comment_box/comment/comment.dart';
+import 'package:healingapp/features/Like.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,8 +45,6 @@ class _HomePageState extends State<HomePage> {
       .doc('$userid')
       .collection('Message')
       .snapshots();
-  // final Stream<QuerySnapshot> _usersDetailsStream =
-  //     FirebaseFirestore.instance.collection('User/$userid').snapshots();
 
   static get userid => FirebaseAuth.instance.currentUser?.uid;
 
@@ -62,29 +70,20 @@ class _HomePageState extends State<HomePage> {
       'message': 'Very cool'
     },
   ];
-  // String? userName;
-  // final document = FirebaseFirestore.instance
-  //     .collection('User')
-  //     .get()
-  //     .then((QuerySnapshot snapshot) {
-  //   snapshot.docs.forEach((element) {
-  //     // userName = (element.data()['name']).toString();
-  //   });
-  // });
-  // final userRef = FirebaseFirestore.instance.collection('User');
-  // getUser() async {
-  //   userRef.get().then((QuerySnapshot querySnapshot) {
-  //     querySnapshot.docs.forEach((element) {
-  //       userName = (element.data()['name']).toString();
-  //     });
-  //   });
 
-  // }
   var dateString;
+  bool isWatched = false;
 
   @override
   void initState() {
     // TODO: implement initState
+    // GetFirstName.name;
+    // GetFirstName.getFirstName();
+    WatchMessage.watchNum;
+    CommentWriten.CommentWritenNum;
+    LikedPage.likeNum;
+    GetLikes.getLikes();
+    GetLikes.like;
 
     super.initState();
   }
@@ -111,6 +110,7 @@ class _HomePageState extends State<HomePage> {
             //     return Image.network(
             //       snapshot.data.toString(),
             //     );
+
             FutureBuilder(
                 future: ProfileImageDatabase.getData(),
                 builder: (context, snapshot) {
@@ -142,39 +142,32 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Container(
-                  //   child: StreamBuilder<QuerySnapshot>(
-                  //     stream: _usersDetailsStream,
-                  //     builder: (BuildContext context,
-                  //         AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //       if (snapshot.hasError) {
-                  //         return Text('Something went wrong');
-                  //       }
-                  //       if (snapshot.connectionState ==
-                  //           ConnectionState.waiting) {
-                  //         return Text('Loading...');
-                  //       }
-                  //       final data = snapshot.data;
-                  //       // levra
-                  //       return Text('${snapshot.data}');
-                  //     },
-                  //   ),
-                  // ),
-
-                  Text(
-                    "Hello!!!",
-                    style: GoogleFonts.inter(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87),
-                  ),
-
-                  Text(
-                    '',
-                    style: GoogleFonts.inter(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: _usersStream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text('Name is Loading...');
+                      }
+                      final data = snapshot.requireData;
+                      int index = 0;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hello!!! " +
+                                (" ${data.docs[index]['name']}").split(' ')[1],
+                            style: GoogleFonts.inter(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -193,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     // alignment: Alignment.topLeft,
                     child: Text(
-                      "Your Questions...",
+                      "Your Problems...",
                       style: GoogleFonts.lato(
                         fontSize: 20,
                       ),
@@ -226,15 +219,19 @@ class _HomePageState extends State<HomePage> {
                     return Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading...');
+                    return Text('Rakesh');
                   }
                   final data = snapshot.requireData;
-
-                  final index = 0;
-                  final time = int.parse('${data.docs[index]['createdTime']}');
-                  final date = DateTime.fromMillisecondsSinceEpoch(time);
-                  var format = new DateFormat("d-M-y");
-                  dateString = format.format(date);
+                  try {
+                    final index = 0;
+                    final time =
+                        int.parse('${data.docs[index]['createdTime']}');
+                    final date = DateTime.fromMillisecondsSinceEpoch(time);
+                    var format = new DateFormat("d-M-y");
+                    dateString = format.format(date);
+                  } catch (e) {
+                    print(e);
+                  }
 
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -296,7 +293,8 @@ class _HomePageState extends State<HomePage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "${data.docs[index]['name']}",
+                                            ('${data.docs[index]['name']}')
+                                                .split(' ')[0],
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.lato(
@@ -429,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                                                       const EdgeInsets.only(
                                                           left: 5.0, right: 5),
                                                   child: Text(
-                                                    "3",
+                                                    "${GetLikes.like}",
                                                     textAlign: TextAlign.start,
                                                     style: GoogleFonts.inter(
                                                         fontSize: 18,
@@ -479,7 +477,7 @@ class _HomePageState extends State<HomePage> {
                                                       const EdgeInsets.only(
                                                           left: 5.0, right: 5),
                                                   child: Text(
-                                                    "54",
+                                                    "${GetLikes.like}",
                                                     textAlign: TextAlign.start,
                                                     style: GoogleFonts.inter(
                                                         fontSize: 18,
@@ -529,7 +527,7 @@ class _HomePageState extends State<HomePage> {
                                                       const EdgeInsets.only(
                                                           left: 5.0, right: 5),
                                                   child: Text(
-                                                    "123",
+                                                    "${CommentWriten.CommentWritenNum}",
                                                     textAlign: TextAlign.start,
                                                     style: GoogleFonts.inter(
                                                         fontSize: 18,
@@ -553,6 +551,20 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         onTap: () {
+                          // like initiated to firebaseStore
+                          LikeModelAPI.createLike(
+                              LikeModel(isLiked: false, totalLikes: 0));
+
+                          // Watch initiated to firebaseStore
+
+                          if (!isWatched) {
+                            WatchModelAPI.createWatch(WatchModel(
+                                isWatched: true,
+                                watchingNum: WatchMessage.isWatched(0, true)));
+
+                            isWatched = true;
+                          }
+
                           print('clicked index ' + '$index');
                           NavigatePage.pageNavigatorIndexAndDate(
                               context, yourQue(), index, dateString);

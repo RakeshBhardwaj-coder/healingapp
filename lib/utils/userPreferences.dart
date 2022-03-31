@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healingapp/utils/profileImageDatabase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:healingapp/model/userModel.dart';
 
@@ -27,6 +29,10 @@ class UserPreferences {
 
   static UserDetails getUser() {
     final json = _preferences?.getString(_keyUser);
+    CollectionReference collectionReference = FirebaseFirestore.instance
+        .collection('User')
+        .doc('$userId')
+        .collection('name');
 
     return json == null ? myUser : UserDetails.fromJson(jsonDecode(json));
   }
