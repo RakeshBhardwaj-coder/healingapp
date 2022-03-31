@@ -4,10 +4,12 @@ class LikeModel {
   bool? isLiked;
   String? likeId;
   int? totalLikes;
+  String? mId;
   LikeModel({
     required this.isLiked,
     this.likeId,
     required this.totalLikes,
+    required this.mId,
   });
 
   Map<String, dynamic> toMap() {
@@ -15,6 +17,7 @@ class LikeModel {
       'isLiked': isLiked,
       'likeId': likeId,
       'totalLikes': totalLikes,
+      'mId': mId,
     };
   }
 
@@ -23,6 +26,7 @@ class LikeModel {
       isLiked: map['isLiked'],
       likeId: map['likeId'],
       totalLikes: map['totalLikes']?.toInt(),
+      mId: map['mId'] ?? '',
     );
   }
 

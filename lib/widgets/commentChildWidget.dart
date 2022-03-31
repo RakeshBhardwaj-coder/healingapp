@@ -28,21 +28,11 @@ class _CommentBoxWidgetState extends State<CommentBoxWidget> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
   List filedata = [
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
+    // {
+    //   'name': 'Biggi Man',
+    //   'pic': 'https://picsum.photos/300/30',
+    //   'message': 'Very cool'
+    // },
   ];
   @override
   void initState() {
@@ -118,9 +108,8 @@ class _CommentBoxWidgetState extends State<CommentBoxWidget> {
               print(commentController.text);
               setState(() {
                 var value = {
-                  'name': 'New User',
-                  'pic':
-                      'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
+                  'name': '${GetFirstName.name}',
+                  'pic': '${ProfileImageDatabase.downloadURL}',
                   'message': commentController.text
                 };
                 filedata.insert(0, value);

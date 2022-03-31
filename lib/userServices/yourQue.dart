@@ -8,10 +8,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:healingapp/features/problemIndex.dart';
 import 'package:healingapp/model/CommentModelAPI.dart';
 import 'package:healingapp/model/LikeModel.dart';
 import 'package:healingapp/model/LikeModelAPI.dart';
 import 'package:healingapp/pages/HomePage.dart';
+import 'package:healingapp/utils/getCurrentMId.dart';
+import 'package:healingapp/utils/getTotalLike.dart';
 import 'package:healingapp/utils/profileImageDatabase.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
 import 'package:healingapp/utils/navigatePage.dart';
@@ -26,18 +29,20 @@ class yourQue extends StatefulWidget {
 }
 
 class _yourQueState extends State<yourQue> {
-  bool isPressed = false;
+  static bool isPressed = false;
 
-  final Stream<QuerySnapshot> _usersStreamMSG = FirebaseFirestore.instance
-      .collection('User')
-      .doc('$userid')
-      .collection('Message')
-      .snapshots();
   // final Stream<QuerySnapshot> _usersDetailsStream =
   //     FirebaseFirestore.instance.collection('User/$userid').snapshots();
+  final Stream<QuerySnapshot> _usersStreamMSG =
+      FirebaseFirestore.instance.collection('Message').snapshots();
 
   static get userid => FirebaseAuth.instance.currentUser?.uid;
   DatabaseReference ref = FirebaseDatabase.instance.ref("User");
+
+  final colRefMsgId = FirebaseFirestore.instance.collection('Message');
+
+  DocumentReference? docRefLike;
+  Map<String, dynamic>? msdData;
 
   List filedata = [
     {
@@ -46,25 +51,20 @@ class _yourQueState extends State<yourQue> {
       'message':
           'https://picsum.photos/300/30https://picsum.photos/300/30https://picsum.photos/300/30https://picsum.photos/300/30'
     },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
   ];
   int? index;
   String? date;
+  int problemIndexNum = ProblemIndex.problemIndex!;
   @override
   void initState() {
     index = NavigatePage.getIndex;
     date = NavigatePage.getDate;
     print(index);
+
+    docRefLike = FirebaseFirestore.instance.collection('Likes').doc();
+
     super.initState();
+    docRefLike!.get().then((value) => msdData = value.data());
   }
 
   // final data = snapshot.requireData;
@@ -258,49 +258,58 @@ class _yourQueState extends State<yourQue> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white, elevation: 0),
-                onPressed: () {
-                  setState(() {
-                    isPressed = !isPressed;
-                    LikeModelAPI.createLike(LikeModel(
-                        isLiked: isPressed,
-                        totalLikes: (LikedPage.isLike(0, isPressed))));
+          child: StreamBuilder(
+            stream: _usersStreamMSG,
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final data = snapshot.requireData;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.white),
+                      onPressed: () {
+                        index = problemIndexNum;
+                        print(index);
+                        setState(() {
+                          isPressed = !isPressed;
+                          GetTotalLike.getTotalLike();
+                          //lev5
+                        });
+                        String mId = data.docs[index!]['mId'];
+                        GetCurrentMid.getMId(mId);
+                        LikeModelAPI.createLike(LikeModel(
+                            isLiked: isPressed,
+                            totalLikes: LikedPage.isLike(0, isPressed),
+                            mId: '$mId'));
+                      },
+                      child: isPressed
+                          ? Icon(
+                              Icons.thumb_up,
+                              color: Colors.blue,
+                            )
+                          : Icon(
+                              Icons.thumb_up_alt_outlined,
+                              color: Colors.black,
+                            )),
+                  ElevatedButton(
+                    onPressed: () {
+                      NavigatePage.pageNavigator(context, CommentBoxWidget());
+                    },
+                    child: const Text('Write your Comment',
+                        style: TextStyle(fontSize: 20)),
 
-                    // LikedPage.isLike(1, isPressed);
-                  });
-                  // NavigatePage.pageNavigator(context, CommentBoxWidget());
-                },
-                child: isPressed
-                    ? Icon(
-                        Icons.thumb_up,
-                        color: Colors.blue,
-                      )
-                    : Icon(
-                        Icons.thumb_up_alt_outlined,
-                        color: Colors.black,
-                      ),
-
-                // color: Colors.blue,
-                // textColor: Colors.white,
-                // elevation: 5,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  NavigatePage.pageNavigator(context, CommentBoxWidget());
-                },
-                child: const Text('Write your Comment',
-                    style: TextStyle(fontSize: 20)),
-
-                // color: Colors.blue,
-                // textColor: Colors.white,
-                // elevation: 5,
-              ),
-            ],
+                    // color: Colors.blue,
+                    // textColor: Colors.white,
+                    // elevation: 5,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

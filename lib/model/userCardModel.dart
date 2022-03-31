@@ -7,18 +7,26 @@ class UserAskCardModel {
   String subject;
   String problem;
   String howWeHelp;
-  String mId;
+  String uId;
+  String? mId;
   String name;
   DateTime createdTime;
+  int like;
+  int watch;
+  int comments;
 
   UserAskCardModel({
     required this.title,
     required this.subject,
     required this.problem,
     required this.howWeHelp,
-    required this.mId,
+    required this.uId,
+    this.mId,
     required this.name,
     required this.createdTime,
+    required this.like,
+    required this.watch,
+    required this.comments,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,9 +35,13 @@ class UserAskCardModel {
       'subject': subject,
       'problem': problem,
       'howWeHelp': howWeHelp,
+      'uId': uId,
       'mId': mId,
       'name': name,
       'createdTime': createdTime.millisecondsSinceEpoch,
+      'like': like,
+      'watch': watch,
+      'comments': comments,
     };
   }
 
@@ -44,9 +56,13 @@ class UserAskCardModel {
       subject: map['subject'] ?? '',
       problem: map['problem'] ?? '',
       howWeHelp: map['howWeHelp'] ?? '',
-      mId: map['mId'] ?? '',
+      uId: map['uId'] ?? '',
+      mId: map['mId'],
       name: map['name'] ?? '',
       createdTime: DateTime.fromMillisecondsSinceEpoch(map['createdTime']),
+      like: map['like']?.toInt() ?? 0,
+      watch: map['watch']?.toInt() ?? 0,
+      comments: map['comments']?.toInt() ?? 0,
     );
   }
 
@@ -55,18 +71,26 @@ class UserAskCardModel {
     String? subject,
     String? problem,
     String? howWeHelp,
+    String? uId,
     String? mId,
     String? name,
     DateTime? createdTime,
+    int? like,
+    int? watch,
+    int? comments,
   }) {
     return UserAskCardModel(
       title: title ?? this.title,
       subject: subject ?? this.subject,
       problem: problem ?? this.problem,
       howWeHelp: howWeHelp ?? this.howWeHelp,
+      uId: uId ?? this.uId,
       mId: mId ?? this.mId,
       name: name ?? this.name,
       createdTime: createdTime ?? this.createdTime,
+      like: like ?? this.like,
+      watch: watch ?? this.watch,
+      comments: comments ?? this.comments,
     );
   }
 

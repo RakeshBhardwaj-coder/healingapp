@@ -6,6 +6,7 @@ import 'package:healingapp/model/userCardModel.dart';
 import 'package:healingapp/model/userModel.dart';
 import 'package:healingapp/userServices/yourQue.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:healingapp/utils/getCurrentUserId.dart';
 import 'package:healingapp/utils/getFirstName.dart';
 import 'package:healingapp/utils/userAskQuePreferences.dart';
 import 'package:healingapp/widgets/bottomNavigatorBar.dart';
@@ -44,13 +45,17 @@ class _AskQueState extends State<AskQue> {
   List<String> _subjects = [
     'Sugar',
     'Diabtise',
+    'Mental Health',
+    'Stress',
+    'Dipression',
     'Bood Pressure',
     'SkinPoblem',
     'Fever',
     'Cold',
     'Cancer',
     'Heartattack',
-    'Vaccine'
+    'Vaccine',
+    'Other'
   ]; // Option 2
   // String? _selectedLocation; // Option 2
 
@@ -177,7 +182,7 @@ class _AskQueState extends State<AskQue> {
                         ),
                         child: MaterialButton(
                           child: Text(
-                            "Send",
+                            "Add problem",
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -191,9 +196,13 @@ class _AskQueState extends State<AskQue> {
                               subject: '$sub',
                               problem: '$prob',
                               howWeHelp: '$howWeHelp',
-                              mId: '$uid',
+                              // mId: '$uid',
+                              uId: '${GetCurrentUserId.currentUserId}',
                               name: '${GetFirstName.name}',
                               createdTime: DateTime.now(),
+                              like: 0,
+                              watch: 0,
+                              comments: 0,
                             ));
 
                             // // UserCardAPI.createCard(cardModel);

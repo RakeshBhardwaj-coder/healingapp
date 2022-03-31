@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:healingapp/features/CommentWriten.dart';
 import 'package:healingapp/features/WatchMessage.dart';
 import 'package:healingapp/features/getLikes.dart';
+import 'package:healingapp/features/problemIndex.dart';
 import 'package:healingapp/model/LikeModel.dart';
 import 'package:healingapp/model/LikeModelAPI.dart';
 import 'package:healingapp/model/WatchModel.dart';
@@ -16,7 +17,10 @@ import 'package:healingapp/model/WatchModleAPI.dart';
 import 'package:healingapp/pages/askQue.dart';
 import 'package:healingapp/pages/blogPage.dart';
 import 'package:healingapp/userServices/yourQue.dart';
+import 'package:healingapp/utils/getCurrentMId.dart';
 import 'package:healingapp/utils/getCurrentUserId.dart';
+import 'package:healingapp/utils/getTotalLike.dart';
+import 'package:healingapp/utils/getWatch.dart';
 import 'package:healingapp/utils/profileImageDatabase.dart';
 import 'package:healingapp/utils/getFirstName.dart';
 import 'package:healingapp/utils/navigatePage.dart';
@@ -33,10 +37,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-const userImageUrl =
-    "https://raw.githubusercontent.com/RakeshBhardwaj-coder/RakeshBhardwaj.github.io/master/rks_logo.jpeg";
-
 class _HomePageState extends State<HomePage> {
+  int? problemIndex = ProblemIndex.problemIndex;
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
   // final userid = FirebaseAuth.instance.currentUser?.uid;
@@ -46,7 +48,12 @@ class _HomePageState extends State<HomePage> {
       .collection('Message')
       .snapshots();
 
+  final Stream<QuerySnapshot> _usersStreamMSG =
+      FirebaseFirestore.instance.collection('Message').snapshots();
+
   static get userid => FirebaseAuth.instance.currentUser?.uid;
+
+  static String? messageId;
 
   List filedata = [
     {
@@ -84,8 +91,10 @@ class _HomePageState extends State<HomePage> {
     LikedPage.likeNum;
     GetLikes.getLikes();
     GetLikes.like;
-
-    super.initState();
+    GetWatch.getTotalWatch();
+    GetWatch.watch;
+    UpdateUser.UpdateUserLike();
+    UpdateUser.UpdateUserWatch();
   }
 
   @override
@@ -143,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StreamBuilder<QuerySnapshot>(
-                    stream: _usersStream,
+                    stream: _usersStreamMSG,
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
@@ -212,18 +221,18 @@ class _HomePageState extends State<HomePage> {
             Container(
               height: 300,
               child: StreamBuilder<QuerySnapshot>(
-                stream: _usersStream,
+                stream: _usersStreamMSG,
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Rakesh');
+                    return Text('Loading...');
                   }
                   final data = snapshot.requireData;
                   try {
-                    final index = 0;
+                    final index = 0; //lev1
                     final time =
                         int.parse('${data.docs[index]['createdTime']}');
                     final date = DateTime.fromMillisecondsSinceEpoch(time);
@@ -426,19 +435,41 @@ class _HomePageState extends State<HomePage> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 5.0, right: 5),
-                                                  child: Text(
-                                                    "${GetLikes.like}",
-                                                    textAlign: TextAlign.start,
-                                                    style: GoogleFonts.inter(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            255)),
-                                                  ),
+                                                  child: GetWatch.watch == null
+                                                      ? Text(
+                                                          '0',
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          255)),
+                                                        )
+                                                      : Text(
+                                                          "${GetWatch.watch}",
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          255)),
+                                                        ),
                                                 ),
                                               ],
                                             ),
@@ -476,19 +507,42 @@ class _HomePageState extends State<HomePage> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 5.0, right: 5),
-                                                  child: Text(
-                                                    "${GetLikes.like}",
-                                                    textAlign: TextAlign.start,
-                                                    style: GoogleFonts.inter(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            255)),
-                                                  ),
+                                                  child: GetTotalLike.likes ==
+                                                          null
+                                                      ? Text(
+                                                          '0',
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          255)),
+                                                        )
+                                                      : Text(
+                                                          "${GetTotalLike.likes}",
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          255)),
+                                                        ),
                                                 ),
                                               ],
                                             ),
@@ -552,10 +606,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onTap: () {
                           // like initiated to firebaseStore
-                          LikeModelAPI.createLike(
-                              LikeModel(isLiked: false, totalLikes: 0));
-
+                          UpdateUser.UpdateUserLike();
+                          UpdateUser.UpdateUserWatch();
                           // Watch initiated to firebaseStore
+                          ProblemIndex.getProblemIndex(index);
 
                           if (!isWatched) {
                             WatchModelAPI.createWatch(WatchModel(
@@ -876,5 +930,28 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: const MyDrawer(),
     );
+  }
+}
+
+class UpdateUser {
+  static Future<void> UpdateUserLike() {
+    CollectionReference msg = FirebaseFirestore.instance.collection('Message');
+
+    return msg
+        .doc('${GetCurrentMid.mId}')
+        .update({'like': '${GetTotalLike.likes}'})
+        .then((value) => print("User Like Updated"))
+        .catchError((error) => print("Failed to Like update : $error"));
+  }
+
+  static Future<void> UpdateUserWatch() {
+    CollectionReference watch =
+        FirebaseFirestore.instance.collection('Message');
+
+    return watch
+        .doc('${GetCurrentMid.mId}')
+        .update({'watch': '${GetWatch.getTotalWatch()}'})
+        .then((value) => print("User watch ${GetWatch.watch}"))
+        .catchError((error) => print("Failed to watch update : $error"));
   }
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healingapp/utils/getCurrentUserId.dart';
 
 class GetFirstName {
-  Stream documentStream = FirebaseFirestore.instance.collection('users').doc('${GetCurrentUserId.currentUserId}').snapshots();
+  Stream documentStream = FirebaseFirestore.instance.collection('User').doc('${GetCurrentUserId.currentUserId}').snapshots();
   static String? name;
   static Future getFirstName() async {
     FirebaseFirestore.instance

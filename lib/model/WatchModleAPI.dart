@@ -4,18 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:healingapp/model/CommentModel.dart';
 import 'package:healingapp/model/LikeModel.dart';
 import 'package:healingapp/model/WatchModel.dart';
+import 'package:healingapp/utils/getCurrentMId.dart';
 import 'package:healingapp/utils/getCurrentUserId.dart';
 
 class WatchModelAPI with ChangeNotifier {
   static Future<String?> createWatch(WatchModel watchModel) async {
     final docWatchModel = FirebaseFirestore.instance
-        .collection('User')
-        .doc('${GetCurrentUserId.currentUserId}')
-        .collection('Message')
-        .doc('KepqjAWcolUFzkPGorEL')
         .collection('Watch')
-        .doc('${GetCurrentUserId.currentUserId}');
-
+        .doc('${GetCurrentMid.mId}');
     watchModel.WatchId = docWatchModel.id;
     await docWatchModel.set(watchModel.toMap());
     return docWatchModel.id;

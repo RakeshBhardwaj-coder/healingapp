@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healingapp/utils/getCurrentMId.dart';
 import 'package:healingapp/utils/getCurrentUserId.dart';
 
 class GetLikes {
@@ -10,7 +11,7 @@ class GetLikes {
         .collection('User')
         .doc('${GetCurrentUserId.currentUserId}')
         .collection('Message')
-        .doc('KepqjAWcolUFzkPGorEL')
+        .doc('${GetCurrentMid.mId}')//lev4
         .collection('Like')
         .doc('${GetCurrentUserId.currentUserId}')
         .get()
